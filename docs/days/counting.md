@@ -31,8 +31,7 @@ For more details on the algorithm behavior (with multi/overlapping reads for ins
  * featureCount requirements : 400M RAM / BAM file
  * featureCount requirements : 2 min CPU time / BAM file
 
-
-??? done "featureCounts script"
+??? done "featureCounts raw script"
 
 	```sh
 	#!/usr/bin/bash
@@ -48,14 +47,43 @@ For more details on the algorithm behavior (with multi/overlapping reads for ins
 	source ~/.bashrc
 	conda activate rnaseq_env
 
-	G_GTF=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+	G_GTF=mt_only.gtf
+
+	inFOLDER=042_d_STAR_map_raw
+
+	mkdir -p 050_d_featureCounts_raw_mouseMT
+
+	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
+		-o 050_d_featureCounts_raw_mouseMT/050_r_featureCounts_raw_mouseMT.counts.txt \
+		$inFOLDER/*.bam
+
+	```
+
+
+??? done "featureCounts trimmed script"
+
+	```sh
+	#!/usr/bin/bash
+	#SBATCH --job-name=featurecount
+	#SBATCH --time=00:30:00
+	#SBATCH --cpus-per-task=8
+	#SBATCH --mem=4G
+	#SBATCH -o 050_l_featureCounts_mouseMT.o
+	#SBATCH -e 050_l_featureCounts_mouseMT.e
+	#SBATCH --account=cpu-s5-biomarker_hunt-0
+	#SBATCH --partition=cpu-core-0
+
+	source ~/.bashrc
+	conda activate rnaseq_env
+
+	G_GTF=mt_only.gtf
 
 	inFOLDER=044_d_STAR_map_trimmed
 
-	mkdir -p 050_d_featureCounts_mouseMT
+	mkdir -p 051_d_featureCounts_trimmed_mouseMT
 
 	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
-		-o 050_d_featureCounts_mouseMT/050_r_featureCounts_mouseMT.counts.txt \
+		-o 051_d_featureCounts_trimmed_mouseMT/050_r_featureCounts_trimmed_mouseMT.counts.txt \
 		$inFOLDER/*.bam
 
 	```
@@ -66,10 +94,10 @@ Review the output matrix. Is this informative? What are the informative columns?
 
 Let's view the information in the GTF file and see how we can add this information in this output matrix.
 
-Now rerun featureCounts with the `--extraAttributes` option configured with the new output filename as `051_d_featureCounts_extraAttributes_mouseMT/051_r_featureCounts_mouseMT.counts.extraAttributes.txt`.
+Now rerun featureCounts with the `--extraAttributes` option configured with the new output filename as `052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_mouseMT.counts.extraAttributes.txt`.
 
 
-??? done "featureCounts script"
+??? done "featureCounts trimmed with extraAttributes script"
 
 	```sh
 	#!/usr/bin/bash
@@ -85,15 +113,15 @@ Now rerun featureCounts with the `--extraAttributes` option configured with the 
 	source ~/.bashrc
 	conda activate rnaseq_env
 
-	G_GTF=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+	G_GTF=mt_only.gtf
 
 	inFOLDER=044_d_STAR_map_trimmed
 
-	mkdir -p 051_d_featureCounts_extraAttributes_mouseMT
+	mkdir -p 052_d_featureCounts_trimmed_extraAttributes_mouseMT
 
 	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
 	    --extraAttributes "transcript_id,gene_name,gene_source,gene_biotype,transcript_name,transcript_biotype,tag" \
-		-o 051_d_featureCounts_extraAttributes_mouseMT/051_r_featureCounts_mouseMT.counts.extraAttributes.txt \
+		-o 052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt \
 		$inFOLDER/*.bam
 
 	```

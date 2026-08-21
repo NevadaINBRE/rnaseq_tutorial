@@ -42,6 +42,7 @@ We will be using the Ensembl references, with their accompanying GTF annotations
 **Task :** Using STAR, build a genome index for the mouse mitochondrial chromosome.
 
  * .fasta and .gtf files are in : `/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/`.
+   * we will need to create a MT specific GTF file 
  * create the index in the folder `041_d_STAR_mouseMT_reference`
  * the aligner is available in the `rnaseq_env` conda environment.
  * this job should require less than 4Gb and 10min to run. 
@@ -67,6 +68,20 @@ We will be using the Ensembl references, with their accompanying GTF annotations
 	While your indexing job is running, you can read ahead in STAR's manual to prepare the next step : mapping your reads onto the indexed reference genome.
 
 
+!!! example "practical"
+
+    Use the command line utility `awk` to create a copy of the GTF file in your `mouseMT` folder filtered for **MT** GTF entries. 
+    Since `awk` is a lightweight program, we can run this filtering step on the headnode
+
+??? success "GTF filter"
+
+	```sh
+	G_GTF=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+
+        awk '/^#/ || $1 == "MT"' $G_GTF > mt_only.gtf
+	```
+
+
 ??? success "STAR indexing script"
 
 	```sh
@@ -83,7 +98,7 @@ We will be using the Ensembl references, with their accompanying GTF annotations
 	conda activate rnaseq_env
 
 	G_FASTA=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.dna.chromosome.MT.fa
-	G_GTF=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+	G_GTF=mt_only.gtf
 
 	mkdir -p 041_d_STAR_mouseMT_reference
 
@@ -248,14 +263,12 @@ You can call MultiQC on the STAR output folder to gather a report on the individ
 
 After having mapped the raw reads, we also map the trimmed reads and then compare the results to decide which one we want to use for the rest of our analysis.
 
-We will spare you the mapping of the trimmed reads, and let you directly download the mapping multiqc report:
-
 
 [ trimmed reads mapping  report ](../assets/html/045_multiqc_mouseMT_mapped_trimmed.html){target=_blank : .md-button }
 
 
 
-??? note "For the curious: scripts for the mapping of trimmed reads"
+??? success "scripts for the mapping of trimmed reads"
 	
 	```sh
 	#!/usr/bin/bash
