@@ -198,7 +198,7 @@ The [fastp github](https://github.com/OpenGene/fastp/) gives very good examples 
 	      -j 030_d_trim/030_l_trim_out.${SAMPLE}.json \
 	      -h 030_d_trim/030_l_trim_out.${SAMPLE}.html
 	```
-	On the cluster, this script is also in	`/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/030bis_s_trim_array.sh`
+	On the cluster, this script is also in	`/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/030_s_trim.sh`
 
 
 **Task 2:** 

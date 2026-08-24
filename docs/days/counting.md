@@ -68,8 +68,8 @@ For more details on the algorithm behavior (with multi/overlapping reads for ins
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=8
 	#SBATCH --mem=4G
-	#SBATCH -o 050_l_featureCounts_mouseMT.o
-	#SBATCH -e 050_l_featureCounts_mouseMT.e
+	#SBATCH -o 051_l_featureCounts_mouseMT_trimmed.o
+	#SBATCH -e 051_l_featureCounts_mouseMT_trimmed.e
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
 
@@ -83,7 +83,7 @@ For more details on the algorithm behavior (with multi/overlapping reads for ins
 	mkdir -p 051_d_featureCounts_trimmed_mouseMT
 
 	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
-		-o 051_d_featureCounts_trimmed_mouseMT/050_r_featureCounts_trimmed_mouseMT.counts.txt \
+		-o 051_d_featureCounts_trimmed_mouseMT/051_r_featureCounts_trimmed_mouseMT.counts.txt \
 		$inFOLDER/*.bam
 
 	```
@@ -94,7 +94,7 @@ Review the output matrix. Is this informative? What are the informative columns?
 
 Let's view the information in the GTF file and see how we can add this information in this output matrix.
 
-Now rerun featureCounts with the `--extraAttributes` option configured with the new output filename as `052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_mouseMT.counts.extraAttributes.txt`.
+Now rerun featureCounts with the `--extraAttributes` option configured with the new output filename as `052_d_featureCounts_trimmed_extraAttributes_mouseMT/052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt`.
 
 
 ??? done "featureCounts trimmed with extraAttributes script"
@@ -105,8 +105,8 @@ Now rerun featureCounts with the `--extraAttributes` option configured with the 
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=8
 	#SBATCH --mem=4G
-	#SBATCH -o 051_l_featureCounts_extraAttributes_mouseMT.o
-	#SBATCH -e 051_l_featureCounts_extraAttributes_mouseMT.e
+	#SBATCH -o 052_l_featureCounts_extraAttributes_mouseMT.o
+	#SBATCH -e 052_l_featureCounts_extraAttributes_mouseMT.e
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
 
@@ -121,7 +121,7 @@ Now rerun featureCounts with the `--extraAttributes` option configured with the 
 
 	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
 	    --extraAttributes "transcript_id,gene_name,gene_source,gene_biotype,transcript_name,transcript_biotype,tag" \
-		-o 052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt \
+		-o 052_d_featureCounts_trimmed_extraAttributes_mouseMT/052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt \
 		$inFOLDER/*.bam
 
 	```
