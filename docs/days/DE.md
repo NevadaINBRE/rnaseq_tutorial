@@ -35,6 +35,7 @@ BiocManager::install("DESeq2")
 BiocManager::install("apeglm")
 BiocManager::install("clusterProfiler")
 BiocManager::install("org.Mm.eg.db")
+BiocManager::install("ReactomePA")
 ```
 
 
