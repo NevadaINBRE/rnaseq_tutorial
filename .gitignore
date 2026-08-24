@@ -4,3 +4,8 @@
 .RData
 .Ruserdata
 *.html
+.DS_Store
+docs/data/051_r_featureCounts_mouseMT.counts.extraAttributes.txt
+051_r_mouseMT.DESeq2.results.csv
+results.csv
+DE.R
