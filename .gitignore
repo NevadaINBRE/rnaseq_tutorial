@@ -9,3 +9,5 @@ docs/data/051_r_featureCounts_mouseMT.counts.extraAttributes.txt
 051_r_mouseMT.DESeq2.results.csv
 results.csv
 DE.R
+052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt
+052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt.summary

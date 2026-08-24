@@ -189,7 +189,7 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 
 	If we did the analysis with them, here is what we get:
 	```r
-	res <- results(dds.f)
+	res <- results(dds)
 	summary(res)
 	```
 	```
@@ -197,11 +197,12 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	adjusted p-value < 0.1
 	LFC > 0 (up)       : 0, 0%
 	LFC < 0 (down)     : 0, 0%
-	outliers [1]       : 7, 54%
+	outliers [1]       : 6, 46%
 	low counts [2]     : 0, 0%
-	(mean count < 16)
+	(mean count < 14)
 	[1] see 'cooksCutoff' argument of ?results
 	[2] see 'independentFiltering' argument of ?results
+
 	```
 
 	So, let's eliminate these two samples.
@@ -209,26 +210,28 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	## analysis without the outliers
 
 	```r
-	numM_noOutliers = numM[ , !( colnames(numM) %in% c('a4','b3') ) ]
-	filtered_df_noOutliers = filtered_df[ , !( colnames(filtered_df) %in% c('a4','b3') ) ]
+	# Start with original dataset
+	df_noOutliers = df[ , !( colnames(df) %in% c('a4','b3') ) ]
+	names(df_noOutliers)
+
+	idx.num <- 14:19
+
+	# Filter again
+	GroupSize <- 3
+	minReads <- 1
+
+	keep <- rowSums(df_noOutliers[,idx.num] >= minReads) >= GroupSize
+
+	filtered_df_noOutliers <- df_noOutliers[keep, ]
 
 	treatment <- factor( c(rep("a",3), rep("b",3)), levels=c("a", "b") )
 	colData <- data.frame(treatment, row.names = colnames(numM_noOutliers))
 	colData 
 
-	```
- 
-	```
-		treatment
-	a1	a			
-	a2	a			
-	a3	a			
-	b1	b			
-	b2	b			
-	b4	b
-	```
+	numM_noOutliers <- filtered_df_noOutliers[,idx.num]
+	rownames(numM_noOutliers) <- filtered_df_noOutliers$Geneid
 
-	```r
+
 	dds <- DESeqDataSetFromMatrix(
   		countData = numM_noOutliers, colData = colData, 
   		design = ~ treatment)
@@ -239,8 +242,10 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	vsd <- varianceStabilizingTransformation(dds,)
 	pcaData <- plotPCA(vsd, intgroup=c("treatment"))
 	pcaData + geom_label(aes(x=PC1,y=PC2,label=name))
+
+
 	```
-	
+ 
 	![pca no outliers](../assets/images/DESeq2_mouseMT/mouseMT_pca2.png)
 
 	It looks much better. Seems like PC1 captures the group effect
@@ -305,13 +310,13 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	```r
 	res.lfc <- lfcShrink(dds, coef=2, res=res)
 	
-	FDRthreshold = 0.01
-	logFCthreshold = 1.0
+	FDRthreshold = 0.05
+	logFCthreshold = 0.5
 	# add a column of NAs
 	res.lfc$diffexpressed <- "NO"
-	# if log2Foldchange > 1 and pvalue < 0.01, set as "UP" 
+	# if log2Foldchange > 0.5 and pvalue < 0.05, set as "UP" 
 	res.lfc$diffexpressed[res.lfc$log2FoldChange > logFCthreshold & res.lfc$padj < FDRthreshold] <- "UP"
-	# if log2Foldchange < 1 and pvalue < 0.01, set as "DOWN"
+	# if log2Foldchange < 0.5 and pvalue < 0.05, set as "DOWN"
 	res.lfc$diffexpressed[res.lfc$log2FoldChange < -logFCthreshold & res.lfc$padj < FDRthreshold] <- "DOWN"
 
 	ggplot(data = data.frame(res.lfc) , aes(x=log2FoldChange , y = -log10(padj) , col =diffexpressed)) + 
@@ -322,10 +327,10 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 
 	table(res.lfc$diffexpressed)
 	```
-	<!-- ```
+	```
 	DOWN   NO   UP 
-	   1   10    1 
-	``` -->
+	   3   9    1 
+	```
 	![volcano plot mouseMT](../assets/images/DESeq2_mouseMT/mouseMT_volcano.png)
 
 
