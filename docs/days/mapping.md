@@ -340,7 +340,7 @@ Which one would you choose?
 	#SBATCH --job-name=star-build
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=4
-	#SBATCH --mem=10G
+	#SBATCH --mem=48G
 	#SBATCH -o 041_l_star_index.o
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
@@ -366,9 +366,9 @@ Which one would you choose?
 	#SBATCH --job-name=star-aln
 	#SBATCH --time=00:10:00
 	#SBATCH --cpus-per-task=4
-	#SBATCH --mem=8G
+	#SBATCH --mem=32G
 	#SBATCH -o 044_l_STAR_map_trimmed.%a.o
-	#SBATCH --array 1-8%8
+	#SBATCH --array 1-6%6
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
 
@@ -395,7 +395,7 @@ Which one would you choose?
 	#SBATCH --job-name=map-trim-multiqc
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=1
-	#SBATCH --mem=1G
+	#SBATCH --mem=4G
 	#SBATCH -o 045_l_multiqc_ruhland2016_mapped_trimmed.o
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
