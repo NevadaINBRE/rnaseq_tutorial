@@ -52,6 +52,67 @@ If possible, we recommend to perform the mapping for both the raw data and the t
 
 The [fastp github](https://github.com/OpenGene/fastp/) gives very good examples of their software usage for both paired-end (`PE`) and single-end (`SE`) reads. We recommend you read their quick-start section attentively.
 
+Here are the main options for running `fastp`, broken down by Single-End (SE) mode, Paired-End (PE) mode, and the universal processing flags that apply to both. Also, note `fastp` will auto-detect `.gz` extensions and correctly process input or output compressed files.
+
+## Single-End (SE) Mode
+
+For single-end data, you only need to specify one input and one output file. `fastp` will automatically auto-detect the adapters for single-end reads.
+
+**Basic Command:**
+```bash
+fastp -i input.fastq.gz -o output.fastq.gz
+```
+
+**SE-Specific Options:**
+* **`-i, --in1`**: The input FASTQ file. 
+* **`-o, --out1`**: The output FASTQ file.
+* **`-f, --trim_front1`**: Trim a specified number of bases from the front (5' end) of the read.
+* **`-t, --trim_tail1`**: Trim a specified number of bases from the tail (3' end) of the read.
+
+---
+
+## Paired-End (PE) Mode
+
+For paired-end data, you must provide both the forward (R1) and reverse (R2) inputs and outputs. `fastp` will evaluate the reads together, dropping pairs if one read fails quality checks to keep your files perfectly synced.
+
+**Basic Command:**
+```bash
+fastp -i input_R1.fastq.gz -I input_R2.fastq.gz -o output_R1.fastq.gz -O output_R2.fastq.gz
+```
+
+**PE-Specific Options:**
+* **`-I, --in2`**: The input FASTQ file for read 2 (reverse).
+* **`-O, --out2`**: The output FASTQ file for read 2.
+* **`-F, --trim_front2`**: Trim a specified number of bases from the front of read 2.
+* **`-T, --trim_tail2`**: Trim a specified number of bases from the tail of read 2.
+* **`-c, --correction`**: Enable base correction in overlapping regions of PE reads (off by default)
+* **`--detect_adapter_for_pe`**: Enable auto-detection of adapters for PE data (on by default in recent `fastp` versions).
+
+---
+
+## Universal Processing Options
+
+These flags control the strictness of the quality control and the outputs generated. They work in both SE and PE modes.
+
+### Adapter Trimming
+* **`-a, --adapter_sequence`**: Manually specify the adapter sequence for read 1 (and read 2, unless `--adapter_sequence_r2` is used).
+* **`-A, --disable_adapter_trimming`**: Turn off all adapter trimming if you only want to do quality filtering.
+
+### Quality Filtering
+* **`-q, --qualified_quality_phred`**: The Phred quality score threshold.
+* **`-u, --unqualified_percent_limit`**: The maximum allowed percentage of unqualified bases before a read is tossed out. The default is 40 (meaning 40%).
+* **`-n, --n_base_limit`**: Maximum number of `N` (uncalled) bases allowed in a read. The default is 5.
+* **`--cut_right --cut_right_window_size 3 --cut_right_mean_quality 25`** : soft trim from 3' end when sliding-window mean quality drops below 25
+
+### Length Filtering
+* **`-l, --length_required`**: Reads shorter than this value after trimming will be discarded. The default is 15.
+* **`--length_limit`**: Keeps reads but truncates them to a maximum specified length.
+
+### Reporting and Performance
+* **`-h, --html`**: Name of the HTML report file (e.g., `-h report.html`). The default is `fastp.html`.
+* **`-j, --json`**: Name of the JSON report file (e.g., `-j report.json`). The default is `fastp.json`.
+* **`-w, --thread`**: Number of CPU threads to use.
+
 
 
 **Task 1:** 
@@ -224,4 +285,49 @@ multiqc -n 032_r_multiqc_mouseMT_trimmed.html -f --title trimmed_fastp 030_d_tri
 ```
 On the cluster, you can find this script in : `/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/032_s_multiqc_trimmed.sh`
 
+
+??? success "Ruhland 2016"
+
+	First create a file named `sampleNames.txt`, containing the sample names:
+
+	```
+	EtOH_1
+	EtOH_2
+	EtOH_3
+	TAM_1
+	TAM_2
+	TAM_3
+	```
+
+
+	```sh
+	#!/usr/bin/bash
+	#SBATCH --job-name=trim_ruhland_array
+	#SBATCH --time=01:00:00
+	#SBATCH --cpus-per-task=4
+	#SBATCH --mem=4G
+	#SBATCH -o 030_l_trim_ruhland.%a.o
+	#SBATCH --array=1-6%6
+	#SBATCH --account=cpu-s5-biomarker_hunt-0
+	#SBATCH --partition=cpu-core-0
+	
+	source ~/.bashrc
+	conda activate rnaseq_env
+	
+	## creating output folder, in case it does not exist
+	mkdir -p 030_d_trim
+	
+	INPUT_FOLDER=/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016
+	
+	## each job grabs a specific line from sampleNames.txt
+	SAMPLE=$(sed -n ${SLURM_ARRAY_TASK_ID}p sampleNames.txt)
+	
+	fastp -i $INPUT_FOLDER/${SAMPLE}.fastq.gz \
+	      -o 030_d_trim/${SAMPLE}.trimmed.fastq.gz \
+	      --thread 4 \
+	      --cut_right --cut_right_window_size 3 --cut_right_mean_quality 25 \
+	      -j 030_d_trim/030_l_trim_out.${SAMPLE}.json \
+	      -h 030_d_trim/030_l_trim_out.${SAMPLE}.html
+	```
+	On the cluster, this script is also in	`/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/030_s_trim.sh`
 

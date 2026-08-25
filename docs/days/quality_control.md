@@ -201,7 +201,6 @@ We will look at one of these html report on the toy dataset, and one of the pre-
 
 	sourceFILE=fastqFiles.txt
 	
-	## retrieving 1 filename from Ruhland2016.fastqFiles.txt
 	fastqFILE=`sed -n ${SLURM_ARRAY_TASK_ID}p $sourceFILE`
 	
 	mkdir -p 010_d_fastqc_array/
@@ -321,3 +320,58 @@ There are many additional parameters which let you customize your report. Use `m
 	At the moment, the analysis steps are independent from sample to sample, so keeping that potential outlier is not a problem. However, when we come to differential analysis we will have to decide if we keep this sample or exclude it.
 
 
+??? success "Ruhland 2016 sbatch scripts"
+
+        First create a file named `sampleNames.txt`, containing the sample names:
+
+        ```
+        EtOH_1
+        EtOH_2
+        EtOH_3
+        TAM_1
+        TAM_2
+        TAM_3
+        ```
+
+
+	```sh
+	#!/usr/bin/bash
+	#SBATCH --job-name=fastqc_array
+	#SBATCH --time=00:30:00
+	#SBATCH --cpus-per-task=1
+	#SBATCH --mem=1G
+	#SBATCH -o 010_l_fastqc.%a.o
+	#SBATCH -e 010_l_fastqc.%a.e
+	#SBATCH --array 1-8%4
+	#SBATCH --account=cpu-s5-biomarker_hunt-0
+	#SBATCH --partition=cpu-core-0
+
+	source ~/.bashrc
+        conda activate rnaseq_env  # load the conda environment
+
+	sourceFILE=sampleNames.txt
+	
+	SAMPLE=`sed -n ${SLURM_ARRAY_TASK_ID}p $sourceFILE`
+	
+	mkdir -p 010_d_fastqc/
+	fastqc -o 010_d_fastqc/ /data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016/${SAMPLE}.fastq.gz
+	```
+        On the cluster, this script is also in  `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_fastqc.sh`
+
+	```sh
+	#!/usr/bin/bash
+	#SBATCH --job-name=multiqc_ruhland2016
+	#SBATCH --time=00:30:00
+	#SBATCH --cpus-per-task=1
+	#SBATCH --mem=1G
+	#SBATCH -o 020_l_multiqc_ruhland.%j.o
+	#SBATCH -e 020_l_multiqc_ruhland.%j.e
+	#SBATCH --account=cpu-s5-biomarker_hunt-0
+	#SBATCH --partition=cpu-core-0
+	
+	source ~/.bashrc
+	conda activate rnaseq_env  # load the conda environment
+
+	multiqc -n 020_r_multiqc_ruhland.html -f --title raw_fastq 010_d_fastqc/
+	```
+	On the cluster, this script is also in `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_multiqc.sh`
