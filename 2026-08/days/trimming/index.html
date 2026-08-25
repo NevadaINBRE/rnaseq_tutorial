@@ -977,24 +977,28 @@ In fact, <strong>trimming can be detrimental</strong> to the number of successfu
 <p><strong>Basic Command:</strong>
 <div class="highlight"><pre><span></span><code>fastp<span class="w"> </span>-i<span class="w"> </span>input.fastq.gz<span class="w"> </span>-o<span class="w"> </span>output.fastq.gz
 </code></pre></div></p>
-<p><strong>SE-Specific Options:</strong>
-* <strong><code>-i, --in1</code></strong>: The input FASTQ file. 
-* <strong><code>-o, --out1</code></strong>: The output FASTQ file.
-* <strong><code>-f, --trim_front1</code></strong>: Trim a specified number of bases from the front (5&rsquo; end) of the read.
-* <strong><code>-t, --trim_tail1</code></strong>: Trim a specified number of bases from the tail (3&rsquo; end) of the read.</p>
+<p><strong>SE-Specific Options:</strong></p>
+<ul>
+<li><code>-i, --in1</code>: The input FASTQ file. </li>
+<li><code>-o, --out1</code>: The output FASTQ file.</li>
+<li><code>-f, --trim_front1</code>: Trim a specified number of bases from the front (5&rsquo; end) of the read.</li>
+<li><code>-t, --trim_tail1</code>: Trim a specified number of bases from the tail (3&rsquo; end) of the read.</li>
+</ul>
 <hr />
 <h2 id="paired-end-pe-mode">Paired-End (PE) Mode</h2>
 <p>For paired-end data, you must provide both the forward (R1) and reverse (R2) inputs and outputs. <code>fastp</code> will evaluate the reads together, dropping pairs if one read fails quality checks to keep your files perfectly synced.</p>
 <p><strong>Basic Command:</strong>
 <div class="highlight"><pre><span></span><code>fastp<span class="w"> </span>-i<span class="w"> </span>input_R1.fastq.gz<span class="w"> </span>-I<span class="w"> </span>input_R2.fastq.gz<span class="w"> </span>-o<span class="w"> </span>output_R1.fastq.gz<span class="w"> </span>-O<span class="w"> </span>output_R2.fastq.gz
 </code></pre></div></p>
-<p><strong>PE-Specific Options:</strong>
-* <strong><code>-I, --in2</code></strong>: The input FASTQ file for read 2 (reverse).
-* <strong><code>-O, --out2</code></strong>: The output FASTQ file for read 2.
-* <strong><code>-F, --trim_front2</code></strong>: Trim a specified number of bases from the front of read 2.
-* <strong><code>-T, --trim_tail2</code></strong>: Trim a specified number of bases from the tail of read 2.
-* <strong><code>-c, --correction</code></strong>: Enable base correction in overlapping regions of PE reads (off by default)
-* <strong><code>--detect_adapter_for_pe</code></strong>: Enable auto-detection of adapters for PE data (on by default in recent <code>fastp</code> versions).</p>
+<p><strong>PE-Specific Options:</strong></p>
+<ul>
+<li><code>-I, --in2</code>: The input FASTQ file for read 2 (reverse).</li>
+<li><code>-O, --out2</code>: The output FASTQ file for read 2.</li>
+<li><code>-F, --trim_front2</code>: Trim a specified number of bases from the front of read 2.</li>
+<li><code>-T, --trim_tail2</code>: Trim a specified number of bases from the tail of read 2.</li>
+<li><code>-c, --correction</code>: Enable base correction in overlapping regions of PE reads (off by default)</li>
+<li><code>--detect_adapter_for_pe</code>: Enable auto-detection of adapters for PE data (on by default in recent <code>fastp</code> versions).</li>
+</ul>
 <hr />
 <h2 id="universal-processing-options">Universal Processing Options</h2>
 <p>These flags control the strictness of the quality control and the outputs generated. They work in both SE and PE modes.</p>
