@@ -339,10 +339,10 @@ There are many additional parameters which let you customize your report. Use `m
 	#SBATCH --job-name=fastqc_array
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=1
-	#SBATCH --mem=1G
+	#SBATCH --mem=4G
 	#SBATCH -o 010_l_fastqc.%a.o
 	#SBATCH -e 010_l_fastqc.%a.e
-	#SBATCH --array 1-8%4
+	#SBATCH --array 1-6%6
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
 	#SBATCH --partition=cpu-core-0
 
@@ -363,7 +363,7 @@ There are many additional parameters which let you customize your report. Use `m
 	#SBATCH --job-name=multiqc_ruhland2016
 	#SBATCH --time=00:30:00
 	#SBATCH --cpus-per-task=1
-	#SBATCH --mem=1G
+	#SBATCH --mem=4G
 	#SBATCH -o 020_l_multiqc_ruhland.%j.o
 	#SBATCH -e 020_l_multiqc_ruhland.%j.e
 	#SBATCH --account=cpu-s5-biomarker_hunt-0
@@ -374,4 +374,4 @@ There are many additional parameters which let you customize your report. Use `m
 
 	multiqc -n 020_r_multiqc_ruhland.html -f --title raw_fastq 010_d_fastqc/
 	```
-	On the cluster, this script is also in `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_multiqc.sh`
+	On the cluster, this script is also in `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/021_s_multiqc.sh`

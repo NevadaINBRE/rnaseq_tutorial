@@ -125,3 +125,32 @@ Now rerun featureCounts with the `--extraAttributes` option configured with the 
 		$inFOLDER/*.bam
 
 	```
+
+??? done "Ruhland2016 featureCounts trimmed with extraAttributes script"
+
+	```sh
+	#!/usr/bin/bash
+	#SBATCH --job-name=featurecount
+	#SBATCH --time=00:30:00
+	#SBATCH --cpus-per-task=8
+	#SBATCH --mem=16G
+	#SBATCH -o 052_l_featureCounts_extraAttributes_Ruhland.o
+	#SBATCH -e 052_l_featureCounts_extraAttributes_Ruhland.e
+	#SBATCH --account=cpu-s5-biomarker_hunt-0
+	#SBATCH --partition=cpu-core-0
+
+	source ~/.bashrc
+	conda activate rnaseq_env
+
+	G_GTF=/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+
+	inFOLDER=044_d_STAR_map_trimmed
+
+	mkdir -p 052_d_featureCounts_trimmed_extraAttributes_Ruhland
+
+	featureCounts -T 8 -a $G_GTF -t exon -g gene_id \
+	    --extraAttributes "transcript_id,gene_name,gene_source,gene_biotype,transcript_name,transcript_biotype,tag" \
+		-o 052_d_featureCounts_trimmed_extraAttributes_Ruhland/052_r_featureCounts_trimmed_Ruhland.counts.extraAttributes.txt \
+		$inFOLDER/*.bam
+
+	```
