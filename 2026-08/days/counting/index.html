@@ -852,6 +852,33 @@ featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8
 <span class="w">    </span><span class="nv">$inFOLDER</span>/*.bam
 </code></pre></div>
 </details>
+<details class="done">
+<summary>Ruhland2016 featureCounts trimmed with extraAttributes script</summary>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=featurecount</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=8</span>
+<span class="c1">#SBATCH --mem=16G</span>
+<span class="c1">#SBATCH -o 052_l_featureCounts_extraAttributes_Ruhland.o</span>
+<span class="c1">#SBATCH -e 052_l_featureCounts_extraAttributes_Ruhland.e</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
+
+<span class="nv">G_GTF</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
+
+<span class="nv">inFOLDER</span><span class="o">=</span>044_d_STAR_map_trimmed
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>052_d_featureCounts_trimmed_extraAttributes_Ruhland
+
+featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">$G_GTF</span><span class="w"> </span>-t<span class="w"> </span>exon<span class="w"> </span>-g<span class="w"> </span>gene_id<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--extraAttributes<span class="w"> </span><span class="s2">&quot;transcript_id,gene_name,gene_source,gene_biotype,transcript_name,transcript_biotype,tag&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>052_d_featureCounts_trimmed_extraAttributes_Ruhland/052_r_featureCounts_trimmed_Ruhland.counts.extraAttributes.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$inFOLDER</span>/*.bam
+</code></pre></div>
+</details>
 
 
 
