@@ -64,10 +64,11 @@ fastp -i input.fastq.gz -o output.fastq.gz
 ```
 
 **SE-Specific Options:**
-* **`-i, --in1`**: The input FASTQ file. 
-* **`-o, --out1`**: The output FASTQ file.
-* **`-f, --trim_front1`**: Trim a specified number of bases from the front (5' end) of the read.
-* **`-t, --trim_tail1`**: Trim a specified number of bases from the tail (3' end) of the read.
+
+* `-i, --in1`: The input FASTQ file. 
+* `-o, --out1`: The output FASTQ file.
+* `-f, --trim_front1`: Trim a specified number of bases from the front (5' end) of the read.
+* `-t, --trim_tail1`: Trim a specified number of bases from the tail (3' end) of the read.
 
 ---
 
@@ -81,12 +82,13 @@ fastp -i input_R1.fastq.gz -I input_R2.fastq.gz -o output_R1.fastq.gz -O output_
 ```
 
 **PE-Specific Options:**
-* **`-I, --in2`**: The input FASTQ file for read 2 (reverse).
-* **`-O, --out2`**: The output FASTQ file for read 2.
-* **`-F, --trim_front2`**: Trim a specified number of bases from the front of read 2.
-* **`-T, --trim_tail2`**: Trim a specified number of bases from the tail of read 2.
-* **`-c, --correction`**: Enable base correction in overlapping regions of PE reads (off by default)
-* **`--detect_adapter_for_pe`**: Enable auto-detection of adapters for PE data (on by default in recent `fastp` versions).
+
+* `-I, --in2`: The input FASTQ file for read 2 (reverse).
+* `-O, --out2`: The output FASTQ file for read 2.
+* `-F, --trim_front2`: Trim a specified number of bases from the front of read 2.
+* `-T, --trim_tail2`: Trim a specified number of bases from the tail of read 2.
+* `-c, --correction`: Enable base correction in overlapping regions of PE reads (off by default)
+* `--detect_adapter_for_pe`: Enable auto-detection of adapters for PE data (on by default in recent `fastp` versions).
 
 ---
 
