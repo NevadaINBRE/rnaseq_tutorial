@@ -954,7 +954,6 @@ sample_a1_fastqc.zip<span class="w">   </span>sample_a2_fastqc.zip<span class="w
 
 <span class="nv">sourceFILE</span><span class="o">=</span>fastqFiles.txt
 
-<span class="c1">## retrieving 1 filename from Ruhland2016.fastqFiles.txt</span>
 <span class="nv">fastqFILE</span><span class="o">=</span><span class="sb">`</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="sb">`</span>
 
 mkdir<span class="w"> </span>-p<span class="w"> </span>010_d_fastqc_array/
@@ -1049,6 +1048,59 @@ This is not the case here because this is a toy dataset with a very small number
 <p>Overall, we can conclude that one sample in particular stands out. </p>
 <p>We should note its name and monitor it closely as we go through the rest of our analysis pipeline.</p>
 <p>At the moment, the analysis steps are independent from sample to sample, so keeping that potential outlier is not a problem. However, when we come to differential analysis we will have to decide if we keep this sample or exclude it.</p>
+</details>
+<details class="success">
+<summary>Ruhland 2016 sbatch scripts</summary>
+<div class="codehilite"><pre><span></span><code>First create a file named `sampleNames.txt`, containing the sample names:
+
+```
+EtOH_1
+EtOH_2
+EtOH_3
+TAM_1
+TAM_2
+TAM_3
+```
+</code></pre></div>
+
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=fastqc_array</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 010_l_fastqc.%a.o</span>
+<span class="c1">#SBATCH -e 010_l_fastqc.%a.e</span>
+<span class="c1">#SBATCH --array 1-8%4</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+<span class="w">    </span>conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+<span class="nv">sourceFILE</span><span class="o">=</span>sampleNames.txt
+
+<span class="nv">SAMPLE</span><span class="o">=</span><span class="sb">`</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="sb">`</span>
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>010_d_fastqc/
+fastqc<span class="w"> </span>-o<span class="w"> </span>010_d_fastqc/<span class="w"> </span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.fastq.gz
+</code></pre></div>
+    On the cluster, this script is also in  <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_fastqc.sh</code></p>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=multiqc_ruhland2016</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 020_l_multiqc_ruhland.%j.o</span>
+<span class="c1">#SBATCH -e 020_l_multiqc_ruhland.%j.e</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+multiqc<span class="w"> </span>-n<span class="w"> </span>020_r_multiqc_ruhland.html<span class="w"> </span>-f<span class="w"> </span>--title<span class="w"> </span>raw_fastq<span class="w"> </span>010_d_fastqc/
+</code></pre></div>
+On the cluster, this script is also in <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_multiqc.sh</code></p>
 </details>
 
 

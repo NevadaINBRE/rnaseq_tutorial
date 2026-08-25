@@ -803,8 +803,8 @@ featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8
 <span class="c1">#SBATCH --time=00:30:00</span>
 <span class="c1">#SBATCH --cpus-per-task=8</span>
 <span class="c1">#SBATCH --mem=4G</span>
-<span class="c1">#SBATCH -o 050_l_featureCounts_mouseMT.o</span>
-<span class="c1">#SBATCH -e 050_l_featureCounts_mouseMT.e</span>
+<span class="c1">#SBATCH -o 051_l_featureCounts_mouseMT_trimmed.o</span>
+<span class="c1">#SBATCH -e 051_l_featureCounts_mouseMT_trimmed.e</span>
 <span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
 <span class="c1">#SBATCH --partition=cpu-core-0</span>
 
@@ -818,13 +818,13 @@ conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
 mkdir<span class="w"> </span>-p<span class="w"> </span>051_d_featureCounts_trimmed_mouseMT
 
 featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">$G_GTF</span><span class="w"> </span>-t<span class="w"> </span>exon<span class="w"> </span>-g<span class="w"> </span>gene_id<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-o<span class="w"> </span>051_d_featureCounts_trimmed_mouseMT/050_r_featureCounts_trimmed_mouseMT.counts.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>051_d_featureCounts_trimmed_mouseMT/051_r_featureCounts_trimmed_mouseMT.counts.txt<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="nv">$inFOLDER</span>/*.bam
 </code></pre></div>
 </details>
 <p>Review the output matrix. Is this informative? What are the informative columns? Could we get more information? These identifiers are great, but what about gene information?</p>
 <p>Let&rsquo;s view the information in the GTF file and see how we can add this information in this output matrix.</p>
-<p>Now rerun featureCounts with the <code>--extraAttributes</code> option configured with the new output filename as <code>052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_mouseMT.counts.extraAttributes.txt</code>.</p>
+<p>Now rerun featureCounts with the <code>--extraAttributes</code> option configured with the new output filename as <code>052_d_featureCounts_trimmed_extraAttributes_mouseMT/052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt</code>.</p>
 <details class="done">
 <summary>featureCounts trimmed with extraAttributes script</summary>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
@@ -832,8 +832,8 @@ featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8
 <span class="c1">#SBATCH --time=00:30:00</span>
 <span class="c1">#SBATCH --cpus-per-task=8</span>
 <span class="c1">#SBATCH --mem=4G</span>
-<span class="c1">#SBATCH -o 051_l_featureCounts_extraAttributes_mouseMT.o</span>
-<span class="c1">#SBATCH -e 051_l_featureCounts_extraAttributes_mouseMT.e</span>
+<span class="c1">#SBATCH -o 052_l_featureCounts_extraAttributes_mouseMT.o</span>
+<span class="c1">#SBATCH -e 052_l_featureCounts_extraAttributes_mouseMT.e</span>
 <span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
 <span class="c1">#SBATCH --partition=cpu-core-0</span>
 
@@ -848,7 +848,7 @@ mkdir<span class="w"> </span>-p<span class="w"> </span>052_d_featureCounts_trimm
 
 featureCounts<span class="w"> </span>-T<span class="w"> </span><span class="m">8</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">$G_GTF</span><span class="w"> </span>-t<span class="w"> </span>exon<span class="w"> </span>-g<span class="w"> </span>gene_id<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--extraAttributes<span class="w"> </span><span class="s2">&quot;transcript_id,gene_name,gene_source,gene_biotype,transcript_name,transcript_biotype,tag&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-o<span class="w"> </span>052_d_featureCounts_trimmed_extraAttributes_mouseMT/051_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>052_d_featureCounts_trimmed_extraAttributes_mouseMT/052_r_featureCounts_trimmed_mouseMT.counts.extraAttributes.txt<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="nv">$inFOLDER</span>/*.bam
 </code></pre></div>
 </details>

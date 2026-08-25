@@ -613,6 +613,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#qc-report-of-mapping-for-the-liu2015-and-ruhland2016-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QC report of mapping for the Liu2015 and Ruhland2016 dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -786,6 +797,17 @@
     <span class="md-ellipsis">
       
         Comparison of mapping the trimmed reads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qc-report-of-mapping-for-the-liu2015-and-ruhland2016-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QC report of mapping for the Liu2015 and Ruhland2016 dataset
       
     </span>
   </a>
@@ -1070,239 +1092,81 @@ multiqc<span class="w"> </span>-n<span class="w"> </span>045_r_multiqc_mouseMT_m
 </code></pre></div>
 it can also be found in the cluster at <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/045_s_multiqc_mouseMT_mapped_trimmed.sh</code></p>
 </details>
-<!--
-
-
-## QC report of mapping for the Liu2015 and Ruhland2016 dataset
-
-**Liu2015**
-
-Take the time to look at the following reports: 
-
-[ Liu2015 raw reads mapping  report ](../assets/html/042_r_star_aln_raw_QC_Liu2015.html){target=_blank : .md-button }
-[ Liu2015 trimmed reads mapping  report ](../assets/html/044_r_star_map_trim_QC_Liu2015.html){target=_blank : .md-button }
-
-Which one would you choose? 
-
-
-**Ruhland**
-
-[ Ruhland2016 raw reads mapping  report ](../assets/html/034_r_STAR_multiqc_Ruhland2016.html){target=_blank : .md-button }
-
-
-
-
-## ADDITIONAL : pseudo-aligning with salmon
-
-[salmon website](https://salmon.readthedocs.io/en/latest/salmon.html){target=_blank : .md-button }
-
-Salmon can allow you to quantify transcript expression without explicitly aligning the sequenced reads onto the reference genome with its gene and splice junction annotations, but instead to a simplification of the corresponding transcriptome, thus saving computational resources.
-
-We refer you to the tool's documentation in order to see [how the reference index is computed](https://salmon.readthedocs.io/en/latest/salmon.html#preparing-transcriptome-indices-mapping-based-mode).
-
-
-**Task :** run salmon to quantify the expression of either the Ruhland or Liu dataset. 
-
- * Use the tool documentation to craft your command line.
- * precomputed indices can be found in `/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_salmon_index` and `/data/gpfs/assoc/biomarker_hunt/data/DATA/Human_salmon_index`.
-
-
-??? success "script"
-
-    Source file : `Ruhland2016.fastqFiles.txt` :
-
-    <div class="highlight"><pre><span></span><code>SRR3180535_EtOH1_1.fastq.gz
-SRR3180536_EtOH2_1.fastq.gz
-SRR3180537_EtOH3_1.fastq.gz
-SRR3180538_TAM1_1.fastq.gz
-SRR3180539_TAM2_1.fastq.gz
-SRR3180540_TAM3_1.fastq.gz
-</code></pre></div>
-
-    sbatch script :
-
-    <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
-<span class="c1">#SBATCH --job-name=salmonRuhland</span>
-<span class="c1">#SBATCH --time=01:00:00</span>
-<span class="c1">#SBATCH --cpus-per-task=8</span>
-<span class="c1">#SBATCH --mem=30G</span>
-<span class="c1">#SBATCH -o 033_l_salmon_ruhland2016.%a.o</span>
-<span class="c1">#SBATCH --array 1-6%1</span>
+<h2 id="qc-report-of-mapping-for-the-liu2015-and-ruhland2016-dataset">QC report of mapping for the Liu2015 and Ruhland2016 dataset</h2>
+<p><strong>Liu2015</strong></p>
+<p>Take the time to look at the following reports: </p>
+<p><a :=":" class="md-button" href="../../assets/html/042_r_star_aln_raw_QC_Liu2015.html" target="_blank"> Liu2015 raw reads mapping  report </a>
+<a :=":" class="md-button" href="../../assets/html/044_r_star_map_trim_QC_Liu2015.html" target="_blank"> Liu2015 trimmed reads mapping  report </a></p>
+<p>Which one would you choose? </p>
+<p><strong>Ruhland</strong></p>
+<p><a :=":" class="md-button" href="../../assets/html/034_r_STAR_multiqc_Ruhland2016.html" target="_blank"> Ruhland2016 raw reads mapping  report </a></p>
+<details class="success">
+<summary>scripts for Ruhland2016</summary>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=star-build</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=4</span>
+<span class="c1">#SBATCH --mem=10G</span>
+<span class="c1">#SBATCH -o 041_l_star_index.o</span>
 <span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
 <span class="c1">#SBATCH --partition=cpu-core-0</span>
 
 <span class="nb">source</span><span class="w"> </span>~/.bashrc
 conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
 
-<span class="nv">dataDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016
+<span class="nv">G_FASTA</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.dna.primary_assembly.fa
+<span class="nv">G_GTF</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_MT_genome/Mus_musculus.GRCm39.116.gtf
 
-<span class="nv">sourceFILE</span><span class="o">=</span>Ruhland2016.fastqFiles.txt
+mkdir<span class="w"> </span>-p<span class="w"> </span>041_d_STAR_Ruhland_reference
 
-<span class="nv">fastqFILE</span><span class="o">=</span><span class="k">$(</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="k">)</span>
-
-<span class="nv">genomeDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_salmon_index
-
-<span class="nv">outDIR</span><span class="o">=</span>033_d_salmon_Ruhland2016_<span class="si">${</span><span class="nv">fastqFILE</span><span class="p">%.*</span><span class="si">}</span>
-
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$outDIR</span>
-
-salmon<span class="w"> </span>quant<span class="w"> </span>-i<span class="w"> </span><span class="nv">$genomeDIR</span><span class="w"> </span>-l<span class="w"> </span>A<span class="w"> </span><span class="se">\</span>
-<span class="w">            </span>-r<span class="w"> </span><span class="nv">$dataDIR</span>/<span class="nv">$fastqFILE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">            </span>-p<span class="w"> </span><span class="m">8</span><span class="w"> </span>--validateMappings<span class="w"> </span>--gcBias<span class="w"> </span>--seqBias<span class="w"> </span><span class="se">\</span>
-<span class="w">            </span>-o<span class="w"> </span><span class="nv">$outDIR</span>
+STAR<span class="w"> </span>--runMode<span class="w"> </span>genomeGenerate<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--genomeDir<span class="w"> </span>041_d_STAR_Ruhland_reference<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--genomeFastaFiles<span class="w"> </span><span class="nv">$G_FASTA</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--sjdbGTFfile<span class="w"> </span><span class="nv">$G_GTF</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--runThreadN<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
 </code></pre></div>
-    it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/033_s_salmon_Ruhland2016.sh`
-
-
-## ADDITIONAL Mapping reads from Ruhland2016 on the reference 
-
-**Task :** Using STAR, align the raw FASTQ files of the Ruhland2016 dataset against thed mouse mitochondrial reference you just created
-
- * Mapping reads and generating a sorted BAM from one of the Ruhland2016 et al. FASTQ files should take about 20 minutes.
- * Use the full indexed genome at `/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_STAR_index/`, rather than the one we just made.
- * **IMPORTANT**: use the following option in your STAR command: `--outTmpDir /tmp/${SLURM_JOB_USER}_${SLURM_JOB_ID}/`. You can use the manual to look up what this option does. The slurm variables ensure a distinct directory is created in `/tmp/` for each user and for each job.
-
-
-??? success "STAR mapping script of the Ruhland2016 data"
-
-    The following sets up an array of tasks to align all samples.
-
-    Source file : `Ruhland2016.fastqFiles.txt` :
-
-    <div class="highlight"><pre><span></span><code>SRR3180535_EtOH1_1.fastq.gz
-SRR3180536_EtOH2_1.fastq.gz
-SRR3180537_EtOH3_1.fastq.gz
-SRR3180538_TAM1_1.fastq.gz
-SRR3180539_TAM2_1.fastq.gz
-SRR3180540_TAM3_1.fastq.gz
-</code></pre></div>
-
-    sbatch script :
-
-    <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
-<span class="c1">#SBATCH --job-name=star-aln-Ruhland2016</span>
-<span class="c1">#SBATCH --time=01:00:00</span>
-<span class="c1">#SBATCH --cpus-per-task=8</span>
-<span class="c1">#SBATCH --mem=30G</span>
-<span class="c1">#SBATCH -o 031_l_STAR_aln_Ruhland2016.%a.o</span>
-<span class="c1">#SBATCH --array 1-1%1</span>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=star-aln</span>
+<span class="c1">#SBATCH --time=00:10:00</span>
+<span class="c1">#SBATCH --cpus-per-task=4</span>
+<span class="c1">#SBATCH --mem=8G</span>
+<span class="c1">#SBATCH -o 044_l_STAR_map_trimmed.%a.o</span>
+<span class="c1">#SBATCH --array 1-8%8</span>
 <span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
 <span class="c1">#SBATCH --partition=cpu-core-0</span>
 
 <span class="nb">source</span><span class="w"> </span>~/.bashrc
 conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
 
-<span class="nv">outDIR</span><span class="o">=</span>031_d_STAR_aln_Ruhland2016
+mkdir<span class="w"> </span>-p<span class="w"> </span>044_d_STAR_map_trimmed
 
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$outDIR</span>
+<span class="nv">SAMPLE</span><span class="o">=</span><span class="k">$(</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span>sampleNames.txt<span class="k">)</span>
 
-<span class="nv">dataDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016
+<span class="nv">FASTQ_NAME</span><span class="o">=</span>030_d_trim/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.trimmed.fastq.gz
 
-<span class="nv">sourceFILE</span><span class="o">=</span>Ruhland2016.fastqFiles.txt
-
-<span class="nv">fastqFILE</span><span class="o">=</span><span class="k">$(</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="k">)</span>
-
-<span class="nv">genomeDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_STAR_index
-
-STAR<span class="w"> </span>--runThreadN<span class="w"> </span><span class="m">8</span><span class="w"> </span>--genomeDir<span class="w"> </span><span class="nv">$genomeDIR</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--outSAMtype<span class="w"> </span>BAM<span class="w"> </span>SortedByCoordinate<span class="w"> </span>--outReadsUnmapped<span class="w"> </span>Fastx<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--outFileNamePrefix<span class="w"> </span><span class="nv">$outDIR</span>/<span class="nv">$fastqFILE</span><span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--quantMode<span class="w"> </span>GeneCounts<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--readFilesIn<span class="w"> </span><span class="nv">$dataDIR</span>/<span class="nv">$fastqFILE</span><span class="w"> </span>--readFilesCommand<span class="w"> </span>zcat
-</code></pre></div>
-    it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/031_s_STAR_aln_Ruhland2016.sh`
-
-    The options of STAR are :
-
-     * **--runThreadN 8 ** : 8 threads to go faster.
-     * **--genomeDir $genomeDIR** : path of the genome to map to.
-     * **--outSAMtype BAM SortedByCoordinate ** : output a coordinate-sorted BAM file.
-     * **--outReadsUnmapped Fastx** : output the non-mapping reads (in case we want to analyse them).
-     * **--outFileNamePrefix $outDIR/$fastqFILE** : prefix of output files.
-     * **--quantMode GeneCounts** : will create a file with counts of reads per gene.
-     * **--readFilesIn $dataDIR/$fastqFILE ** : input read file.
-     * **--readFilesCommand zcat** : command to unzip the input file.
-
-
-
-
-## ADDITIONNAL : STAR 2-Pass
-
-Genome annotations are incomplete, particularly for complex eukaryotes : there are many as-of-yet unannotated splice junctions.
-
-The first pass of STAR can create a splice junction database, containing both known and novel junctions.
-This splice junction database can, in turn, be used to guide an improved second round of alignment, using a command like:
-
-<div class="highlight"><pre><span></span><code>STAR<span class="w"> </span>&lt;1st<span class="w"> </span>round<span class="w"> </span>options&gt;<span class="w"> </span>--sjdbFileChrStartEnd<span class="w"> </span>sample_SJ.out.tab
-</code></pre></div>
-
-**Task :** run STAR in this STAR-2pass mode on the same sample as before and evaluate the results.
-
-
-??? success "script"
-
-    <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
-<span class="c1">#SBATCH --job-name=star-aln2-Ruhland2016</span>
-<span class="c1">#SBATCH --time=01:00:00</span>
-<span class="c1">#SBATCH --cpus-per-task=8</span>
-<span class="c1">#SBATCH --mem=30G</span>
-<span class="c1">#SBATCH -o 032_l_STAR_2PASS_Ruhland2016.%a.o</span>
-<span class="c1">#SBATCH --array 1-1%1</span>
-<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
-<span class="c1">#SBATCH --partition=cpu-core-0</span>
-
-<span class="nb">source</span><span class="w"> </span>~/.bashrc
-conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
-
-<span class="nv">outDIR</span><span class="o">=</span>032_d_STAR_Ruhland2016
-
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$outDIR</span>
-
-<span class="nv">dataDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016
-
-<span class="nv">sourceFILE</span><span class="o">=</span>Ruhland2016.fastqFiles.txt
-
-<span class="nv">fastqFILE</span><span class="o">=</span><span class="k">$(</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="k">)</span>
-
-<span class="nv">genomeDIR</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Mouse_STAR_index
-
-STAR<span class="w"> </span>--runThreadN<span class="w"> </span><span class="m">8</span><span class="w"> </span>--genomeDir<span class="w"> </span><span class="nv">$genomeDIR</span><span class="w"> </span><span class="se">\</span>
+STAR<span class="w"> </span>--runThreadN<span class="w"> </span><span class="m">4</span><span class="w"> </span>--genomeDir<span class="w"> </span>041_d_STAR_Ruhland_reference<span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>--outSAMtype<span class="w"> </span>BAM<span class="w"> </span>SortedByCoordinate<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--outFileNamePrefix<span class="w"> </span><span class="nv">$outDIR</span>/<span class="nv">$fastqFILE</span>.2Pass.<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--outReadsUnmapped<span class="w"> </span>Fastx<span class="w"> </span>--quantMode<span class="w"> </span>GeneCounts<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--sjdbFileChrStartEnd<span class="w"> </span><span class="nv">$outDIR</span>/<span class="si">${</span><span class="nv">fastqFILE</span><span class="si">}</span>SJ.out.tab<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span>--readFilesIn<span class="w"> </span><span class="nv">$dataDIR</span>/<span class="nv">$fastqFILE</span><span class="w"> </span>--readFilesCommand<span class="w"> </span>zcat
+<span class="w">     </span>--outFileNamePrefix<span class="w"> </span>044_d_STAR_map_trimmed/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>_trimmed.<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--quantMode<span class="w"> </span>GeneCounts<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--readFilesIn<span class="w"> </span><span class="nv">$FASTQ_NAME</span>
 </code></pre></div>
-    it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/032_s_STAR_2PASS_Ruhland2016.sh`
+it can also be found in the cluster at <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/044_s_STAR_map_trimmed.sh</code></p>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=map-trim-multiqc</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 045_l_multiqc_ruhland2016_mapped_trimmed.o</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
 
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
 
-<!--
-## ADDITIONNAL : Assessing read coverage for biases
-
-The [RSeQC](http://rseqc.sourceforge.net/) package includes a function for evaluating [“gene body coverage”](http://rseqc.sourceforge.net/#genebody-coverage-py), which
-can be used to assess 5’ or 3’ bias, which might happen if your RNA is degraded or otherwise biased
-
-Requirements:
-
- * Genome annotations in the 12-column BED format : [you can grab one for mouse here](https://sourceforge.net/projects/rseqc/files/BED/Mouse_Mus_musculus/), or at `/data/GRCm38/Mus_musculus.GRCm38.89.bed12` on the server `CHECK LINK. gtf2bed instead?`
- * *Indexed* and sorted BAM file, which can be generated from a sorted BAM using the SAMtools package: `samtools index sample1_sorted.bam`
-
-Example command :
-<div class="highlight"><pre><span></span><code>geneBody_coverage.py<span class="w"> </span>-r<span class="w"> </span>/data/GRCm38/Mus_musculus.GRCm38.89.bed12<span class="w"> </span><span class="se">\</span>
-<span class="w">                     </span>-i<span class="w"> </span>sample1_sorted.bam<span class="w"> </span><span class="se">\</span>
-<span class="w">                     </span>-f<span class="w"> </span>pdf<span class="w"> </span><span class="se">\</span>
-<span class="w">                     </span>-o<span class="w"> </span>output_prefix
+multiqc<span class="w"> </span>-n<span class="w"> </span>045_r_multiqc_ruhland_mapped_trimmed.html<span class="w"> </span>-f<span class="w"> </span>--title<span class="w"> </span>mapped_trimmed<span class="w"> </span>044_d_STAR_map_trimmed/
 </code></pre></div>
-
-**Task** : Evaluate the gene body coverage for the sample you aligned.
-
- * expected RAM : 
- * expected time : 
-
-??? done "geneBody_coverage script"
-
-    TBD 
--->
+it can also be found in the cluster at <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/045_s_multiqc_mouseMT_mapped_trimmed.sh</code></p>
+</details>
 
 
 

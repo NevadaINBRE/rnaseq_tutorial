@@ -563,6 +563,89 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#single-end-se-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-End (SE) Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paired-end-pe-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paired-End (PE) Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#universal-processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Universal Processing Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Processing Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter-trimming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adapter Trimming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quality Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#length-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Length Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reporting-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reporting and Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -748,6 +831,89 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#single-end-se-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-End (SE) Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paired-end-pe-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paired-End (PE) Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#universal-processing-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Universal Processing Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Processing Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter-trimming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adapter Trimming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quality Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#length-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Length Filtering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reporting-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reporting and Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -805,6 +971,56 @@ In fact, <strong>trimming can be detrimental</strong> to the number of successfu
 </details>
 <h2 id="trimming-with-fastp">trimming with Fastp</h2>
 <p>The <a href="https://github.com/OpenGene/fastp/">fastp github</a> gives very good examples of their software usage for both paired-end (<code>PE</code>) and single-end (<code>SE</code>) reads. We recommend you read their quick-start section attentively.</p>
+<p>Here are the main options for running <code>fastp</code>, broken down by Single-End (SE) mode, Paired-End (PE) mode, and the universal processing flags that apply to both. Also, note <code>fastp</code> will auto-detect <code>.gz</code> extensions and correctly process input or output compressed files.</p>
+<h2 id="single-end-se-mode">Single-End (SE) Mode</h2>
+<p>For single-end data, you only need to specify one input and one output file. <code>fastp</code> will automatically auto-detect the adapters for single-end reads.</p>
+<p><strong>Basic Command:</strong>
+<div class="highlight"><pre><span></span><code>fastp<span class="w"> </span>-i<span class="w"> </span>input.fastq.gz<span class="w"> </span>-o<span class="w"> </span>output.fastq.gz
+</code></pre></div></p>
+<p><strong>SE-Specific Options:</strong>
+* <strong><code>-i, --in1</code></strong>: The input FASTQ file. 
+* <strong><code>-o, --out1</code></strong>: The output FASTQ file.
+* <strong><code>-f, --trim_front1</code></strong>: Trim a specified number of bases from the front (5&rsquo; end) of the read.
+* <strong><code>-t, --trim_tail1</code></strong>: Trim a specified number of bases from the tail (3&rsquo; end) of the read.</p>
+<hr />
+<h2 id="paired-end-pe-mode">Paired-End (PE) Mode</h2>
+<p>For paired-end data, you must provide both the forward (R1) and reverse (R2) inputs and outputs. <code>fastp</code> will evaluate the reads together, dropping pairs if one read fails quality checks to keep your files perfectly synced.</p>
+<p><strong>Basic Command:</strong>
+<div class="highlight"><pre><span></span><code>fastp<span class="w"> </span>-i<span class="w"> </span>input_R1.fastq.gz<span class="w"> </span>-I<span class="w"> </span>input_R2.fastq.gz<span class="w"> </span>-o<span class="w"> </span>output_R1.fastq.gz<span class="w"> </span>-O<span class="w"> </span>output_R2.fastq.gz
+</code></pre></div></p>
+<p><strong>PE-Specific Options:</strong>
+* <strong><code>-I, --in2</code></strong>: The input FASTQ file for read 2 (reverse).
+* <strong><code>-O, --out2</code></strong>: The output FASTQ file for read 2.
+* <strong><code>-F, --trim_front2</code></strong>: Trim a specified number of bases from the front of read 2.
+* <strong><code>-T, --trim_tail2</code></strong>: Trim a specified number of bases from the tail of read 2.
+* <strong><code>-c, --correction</code></strong>: Enable base correction in overlapping regions of PE reads (off by default)
+* <strong><code>--detect_adapter_for_pe</code></strong>: Enable auto-detection of adapters for PE data (on by default in recent <code>fastp</code> versions).</p>
+<hr />
+<h2 id="universal-processing-options">Universal Processing Options</h2>
+<p>These flags control the strictness of the quality control and the outputs generated. They work in both SE and PE modes.</p>
+<h3 id="adapter-trimming">Adapter Trimming</h3>
+<ul>
+<li><strong><code>-a, --adapter_sequence</code></strong>: Manually specify the adapter sequence for read 1 (and read 2, unless <code>--adapter_sequence_r2</code> is used).</li>
+<li><strong><code>-A, --disable_adapter_trimming</code></strong>: Turn off all adapter trimming if you only want to do quality filtering.</li>
+</ul>
+<h3 id="quality-filtering">Quality Filtering</h3>
+<ul>
+<li><strong><code>-q, --qualified_quality_phred</code></strong>: The Phred quality score threshold.</li>
+<li><strong><code>-u, --unqualified_percent_limit</code></strong>: The maximum allowed percentage of unqualified bases before a read is tossed out. The default is 40 (meaning 40%).</li>
+<li><strong><code>-n, --n_base_limit</code></strong>: Maximum number of <code>N</code> (uncalled) bases allowed in a read. The default is 5.</li>
+<li><strong><code>--cut_right --cut_right_window_size 3 --cut_right_mean_quality 25</code></strong> : soft trim from 3&rsquo; end when sliding-window mean quality drops below 25</li>
+</ul>
+<h3 id="length-filtering">Length Filtering</h3>
+<ul>
+<li><strong><code>-l, --length_required</code></strong>: Reads shorter than this value after trimming will be discarded. The default is 15.</li>
+<li><strong><code>--length_limit</code></strong>: Keeps reads but truncates them to a maximum specified length.</li>
+</ul>
+<h3 id="reporting-and-performance">Reporting and Performance</h3>
+<ul>
+<li><strong><code>-h, --html</code></strong>: Name of the HTML report file (e.g., <code>-h report.html</code>). The default is <code>fastp.html</code>.</li>
+<li><strong><code>-j, --json</code></strong>: Name of the JSON report file (e.g., <code>-j report.json</code>). The default is <code>fastp.json</code>.</li>
+<li><strong><code>-w, --thread</code></strong>: Number of CPU threads to use.</li>
+</ul>
 <p><strong>Task 1:</strong> </p>
 <ul>
 <li>
@@ -942,7 +1158,7 @@ fastp<span class="w"> </span>-i<span class="w"> </span><span class="nv">$INPUT_F
 <span class="w">      </span>-j<span class="w"> </span>030_d_trim/030_l_trim_out.<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.json<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-h<span class="w"> </span>030_d_trim/030_l_trim_out.<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.html
 </code></pre></div>
-On the cluster, this script is also in  <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/030bis_s_trim_array.sh</code></p>
+On the cluster, this script is also in  <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/030_s_trim.sh</code></p>
 </details>
 <p><strong>Task 2:</strong> </p>
 <ul>
@@ -964,6 +1180,46 @@ conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
 multiqc<span class="w"> </span>-n<span class="w"> </span>032_r_multiqc_mouseMT_trimmed.html<span class="w"> </span>-f<span class="w"> </span>--title<span class="w"> </span>trimmed_fastp<span class="w"> </span>030_d_trim/
 </code></pre></div>
 On the cluster, you can find this script in : <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/032_s_multiqc_trimmed.sh</code></p>
+<details class="success">
+<summary>Ruhland 2016</summary>
+<p>First create a file named <code>sampleNames.txt</code>, containing the sample names:</p>
+<div class="highlight"><pre><span></span><code>EtOH_1
+EtOH_2
+EtOH_3
+TAM_1
+TAM_2
+TAM_3
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=trim_ruhland_array</span>
+<span class="c1">#SBATCH --time=01:00:00</span>
+<span class="c1">#SBATCH --cpus-per-task=4</span>
+<span class="c1">#SBATCH --mem=4G</span>
+<span class="c1">#SBATCH -o 030_l_trim_ruhland.%a.o</span>
+<span class="c1">#SBATCH --array=1-6%6</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env
+
+<span class="c1">## creating output folder, in case it does not exist</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>030_d_trim
+
+<span class="nv">INPUT_FOLDER</span><span class="o">=</span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016
+
+<span class="c1">## each job grabs a specific line from sampleNames.txt</span>
+<span class="nv">SAMPLE</span><span class="o">=</span><span class="k">$(</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span>sampleNames.txt<span class="k">)</span>
+
+fastp<span class="w"> </span>-i<span class="w"> </span><span class="nv">$INPUT_FOLDER</span>/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.fastq.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-o<span class="w"> </span>030_d_trim/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.trimmed.fastq.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--thread<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--cut_right<span class="w"> </span>--cut_right_window_size<span class="w"> </span><span class="m">3</span><span class="w"> </span>--cut_right_mean_quality<span class="w"> </span><span class="m">25</span><span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-j<span class="w"> </span>030_d_trim/030_l_trim_out.<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.json<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-h<span class="w"> </span>030_d_trim/030_l_trim_out.<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.html
+</code></pre></div>
+On the cluster, this script is also in  <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/030_s_trim.sh</code></p>
+</details>
 
 
 
