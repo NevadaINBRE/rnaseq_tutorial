@@ -57,15 +57,6 @@ head(df)
 names(df)
 ```
 
-<!-- ```
-					V2		V3		V4
-ENSMUSG00000064336	0		0		0	
-ENSMUSG00000064337	0		0		0	
-ENSMUSG00000064338	0		0		0	
-ENSMUSG00000064339	0		0		0	
-ENSMUSG00000064340	0		0		0	
-ENSMUSG00000064341	4046	1991	2055	
-``` -->
 
 We have gene information and count information. We need to be able to easily access our counts and rename our sample columns for easier use. 
 
@@ -76,15 +67,7 @@ cbind(names(df[idx.num]), sample_names)
 colnames(df)[idx.num] <- sample_names
 names(df)
 ```
-<!-- ```
-					a1		a2		a3		a4	b1	b2	b3	b4
-ENSMUSG00000064336	0		0		0		0	0	0	0	0
-ENSMUSG00000064337	0		0		0		0	0	0	0	0
-ENSMUSG00000064338	0		0		0		0	0	0	0	0
-ENSMUSG00000064339	0		0		0		2	0	0	0	0
-ENSMUSG00000064340	0		0		0		0	0	0	0	0
-ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
-``` -->
+
 
 
 ??? success "DESeq2 analysis"
@@ -153,22 +136,11 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	dim(dds)
 	```
 
-
 	We perform the estimation of dispersions 
 	```r
 	dds <- DESeq(dds)
 	```
-	```
-	estimating size factors
-	estimating dispersions
-	gene-wise dispersion estimates
-	mean-dispersion relationship
-	-- note: fitType='parametric', but the dispersion trend was not well captured by the
-	   function: y = a/x + b, and a local regression fit was automatically substituted.
-	   specify fitType='local' or 'mean' to avoid this message next time.
-	final dispersion estimates
-	fitting model and testing
-	```
+	
 
 	PCA plot of the samples:
 	```r
@@ -247,27 +219,6 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	![pca no outliers](../assets/images/DESeq2_mouseMT/mouseMT_pca2.png)
 
 	It looks much better. Seems like PC1 captures the group effect
-
-
-	<!-- We plot the estimate of the dispersions
-	```r
-	# * black dot : raw
-	# * red dot : local trend
-	# * blue : corrected
-	plotDispEsts(dds)
-	```
-
-	![dispersion estimate mouseMT](../assets/images/DESeq2_mouseMT/mouseMT_dispEst.png)
-
-	There is so few genes that this does not look super nice here
-
-	For the Ruhland2016 dataset it looks like:
-
-	![dispersion estimate Ruhland2016](../assets/images/DESeq2/ruhland2016_dispEst.png)
-
-	This plot is not easy to interpret. It represents the amount of dispersion at different levels of expression. It is directly linked to our ability to detect differential expression.
-
-	Here it looks about normal compared to typical bulk RNA-seq experiments : the dispersion is comparatively larger for lowly-expressed genes. -->
 
 
 	```r
