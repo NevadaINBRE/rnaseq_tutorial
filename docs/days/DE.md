@@ -306,29 +306,25 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	Volcano Plot:
 
 	```r
-	res.lfc <- lfcShrink(dds, coef=2, res=res)
 	
 	FDRthreshold = 0.05
 	logFCthreshold = 0.5
 	# add a column of NAs
-	res.lfc$diffexpressed <- "NO"
+	res$diffexpressed <- "NO"
 	# if log2Foldchange > 0.5 and pvalue < 0.05, set as "UP" 
-	res.lfc$diffexpressed[res.lfc$log2FoldChange > logFCthreshold & res.lfc$padj < FDRthreshold] <- "UP"
+	res$diffexpressed[res$log2FoldChange > logFCthreshold & res$padj < FDRthreshold] <- "UP"
 	# if log2Foldchange < 0.5 and pvalue < 0.05, set as "DOWN"
-	res.lfc$diffexpressed[res.lfc$log2FoldChange < -logFCthreshold & res.lfc$padj < FDRthreshold] <- "DOWN"
+	res$diffexpressed[res$log2FoldChange < -logFCthreshold & res$padj < FDRthreshold] <- "DOWN"
 
-	ggplot(data = data.frame(res.lfc) , aes(x=log2FoldChange , y = -log10(padj) , col =diffexpressed)) + 
+	ggplot(data = data.frame(res) , aes(x=log2FoldChange , y = -log10(padj) , col =diffexpressed)) + 
 	  geom_point() + 
 	  geom_vline(xintercept=c(-logFCthreshold, logFCthreshold), col="red") +
 	  geom_hline(yintercept=-log10(FDRthreshold), col="red") +
 	  scale_color_manual(values=c("blue", "grey", "red"))
 
-	table(res.lfc$diffexpressed)
+	table(res$diffexpressed)
 	```
-	```
-	DOWN   NO   UP 
-	   3   9    1 
-	```
+
 	![volcano plot mouseMT](../assets/images/DESeq2_mouseMT/mouseMT_volcano.png)
 
 
@@ -510,22 +506,20 @@ Use DESeq2 to conduct a differential expression analysis on the Ruhland dataset.
 	FDRthreshold = 0.05
 	logFCthreshold = 1
 
-	res.lfc <- lfcShrink(dds, coef=2, res=res)
-
 	# add a column of NAs
-	res.lfc$diffexpressed <- "NO"
+	res$diffexpressed <- "NO"
 	# if log2Foldchange > 1 and padj < 0.05, set as "UP" 
-	res.lfc$diffexpressed[res.lfc$log2FoldChange > logFCthreshold & res.lfc$padj < FDRthreshold] <- "UP"
+	res$diffexpressed[res$log2FoldChange > logFCthreshold & res$padj < FDRthreshold] <- "UP"
 	# if log2Foldchange < -1 and padj < 0.05, set as "DOWN"
-	res.lfc$diffexpressed[res.lfc$log2FoldChange < -logFCthreshold & res.lfc$padj < FDRthreshold] <- "DOWN"
+	res$diffexpressed[res$log2FoldChange < -logFCthreshold & res$padj < FDRthreshold] <- "DOWN"
 
-	ggplot( data = data.frame( res.lfc ) , aes( x=log2FoldChange , y = -log10(padj) , col =diffexpressed ) ) + 
+	ggplot(data = data.frame(res) , aes(x=log2FoldChange , y = -log10(padj) , col =diffexpressed)) + 
 	  geom_point() + 
 	  geom_vline(xintercept=c(-logFCthreshold, logFCthreshold), col="red") +
 	  geom_hline(yintercept=-log10(FDRthreshold), col="red") +
 	  scale_color_manual(values=c("blue", "grey", "red"))
 
-	table(res.lfc$diffexpressed)
+	table(res$diffexpressed)
 	```
 
 	How many genes are called `UP` and `DOWN` at this threshold?

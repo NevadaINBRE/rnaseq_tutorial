@@ -133,6 +133,23 @@ plot
 table(res.lfc$diffexpressed)
 
 
+res$diffexpressed <- "NO"
+# if log2Foldchange > 1 and pvalue < 0.01, set as "UP" 
+res$diffexpressed[res$log2FoldChange > logFCthreshold & res$padj < FDRthreshold] <- "UP"
+# if log2Foldchange < 1 and pvalue < 0.01, set as "DOWN"
+res$diffexpressed[res$log2FoldChange < -logFCthreshold & res$padj < FDRthreshold] <- "DOWN"
+
+plot <- ggplot( data = data.frame( res ) , aes( x=log2FoldChange , y = -log10(padj) , col =diffexpressed ) ) + 
+  geom_point() + 
+  geom_vline(xintercept=c(-logFCthreshold, logFCthreshold), col="red") +
+  geom_hline(yintercept=-log10(FDRthreshold), col="red") +
+  scale_color_manual(values=c("blue", "grey", "red"))
+plot
+
+table(res$diffexpressed)
+
+
+
 #ggsave(plot, filename = "docs/assets/images/DESeq2_mouseMT/mouseMT_volcano.png", dpi = 600)
 
 
