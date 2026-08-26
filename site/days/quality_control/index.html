@@ -1,0 +1,1117 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://nevadainbre.github.io/rnaseq_tutorial/2026-08/days/quality_control/">
+      
+      
+        <link rel="prev" href="../server_login/">
+      
+      
+        <link rel="next" href="../trimming/">
+      
+      
+      <link rel="icon" href="../../assets/images/university-logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Quality control - Introduction to RNA-Seq - From quality control to pathway analysis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#material" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Introduction to RNA-Seq - From quality control to pathway analysis" class="md-header__button md-logo" aria-label="Introduction to RNA-Seq - From quality control to pathway analysis" data-md-component="logo">
+      
+  <img src="../../assets/images/university-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to RNA-Seq - From quality control to pathway analysis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quality control
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NevadaINBRE/rnaseq_tutorial" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NevadaINBRE/rnaseq_tutorial
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Introduction to RNA-Seq - From quality control to pathway analysis" class="md-nav__button md-logo" aria-label="Introduction to RNA-Seq - From quality control to pathway analysis" data-md-component="logo">
+      
+  <img src="../../assets/images/university-logo.svg" alt="logo">
+
+    </a>
+    Introduction to RNA-Seq - From quality control to pathway analysis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NevadaINBRE/rnaseq_tutorial" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NevadaINBRE/rnaseq_tutorial
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../precourse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Precourse preparations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../slides_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Slides notes (draft)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cheatsheets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorial
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RNAseq - technologies and design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../server_login/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Server login + unix fresh up
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Quality control
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quality control
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#material" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meet-the-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet the datasets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastqc-a-report-for-a-single-fastq-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      FastQC : a report for a single fastq file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiqc-grouping-multiple-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      MultiQC : grouping multiple reports
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trimming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence trimming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reads mapping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../counting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quantification Matrix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Differential Expression Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../enrichment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Enrichment analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#material" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meet-the-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet the datasets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastqc-a-report-for-a-single-fastq-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      FastQC : a report for a single fastq file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiqc-grouping-multiple-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      MultiQC : grouping multiple reports
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Quality control</h1>
+
+<p>Quality Control is the essential first step to perform once you receive your data from your sequencing facility, typically as <code>.fastq</code> or <code>.fastq.gz</code> files.</p>
+<p><strong>During this session, you will learn to :</strong></p>
+<ul>
+<li>create QC report for a single file with fastqc</li>
+<li>aggregate multiple QC reports using multiqc</li>
+<li>interpret the QC reports for an entire RNA-seq experiment</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although we aim to present tools as stable as possible, software evolve and their precise interface can change with time.
+We strongly recommend you consult each command&rsquo;s help page or manual before launching them.
+To this end, we provide links to each tool&rsquo;s website. </p>
+<p>This can also be useful to you if you are following this course without access to a compute cluster and have to install these tools on your machine.</p>
+</div>
+<h2 id="material">Material</h2>
+<p><a :=":" class="md-button" href="../../assets/pdf/RNA-Seq_02_QualityControl.pdf" target="_blank"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v144H176c-35.3 0-64 28.7-64 64v144H64c-35.3 0-64-28.7-64-64zm384 64H256V0zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56h-16v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-16v48zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-32c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 128c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-16v96zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V368"/></svg></span> Download the presentation</a></p>
+<p><a :=":" class="md-button" href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank">FastQC website</a></p>
+<p><a :=":" class="md-button" href="https://multiqc.info/" target="_blank">MultiQC website</a></p>
+<h2 id="meet-the-datasets">Meet the datasets</h2>
+<p>We will be working with one main dataset, a small mitochondrial RNASeq toy dataset. There are two other example datasets that correspond to actual data that you can analyze on your own time:</p>
+<ul>
+<li>
+<p>toy dataset: RNAseq of mice mitochondrial mRNA</p>
+<ul>
+<li>8 samples : 4 in group A and 4 in group B</li>
+<li>single-end, 100bp reads</li>
+<li>on the cluster: <code>/data/gpfs/assoc/biomarker_hunt/data/mouseMT</code></li>
+<li><a class="md-button" href="../../assets/zip/toy_dataset_fastq.zip"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM96 48c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32c-8.8 0-16-7.2-16-16m0 64c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32c-8.8 0-16-7.2-16-16m0 64c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32c-8.8 0-16-7.2-16-16m-6.3 71.8c3.7-14 16.4-23.8 30.9-23.8h14.8c14.5 0 27.2 9.7 30.9 23.8l23.5 88.2c1.4 5.4 2.1 10.9 2.1 16.4 0 35.2-28.8 63.7-64 63.7s-64-28.5-64-63.7c0-5.5.7-11.1 2.1-16.4l23.5-88.2zM112 336c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16z"/></svg></span> fastq-files</a></li>
+</ul>
+</li>
+<li>
+<p>Liu et al. (2015) “RNA-Seq identifies novel myocardial gene expression signatures of heart failure” Genomics 105(2):83-89 <a href="https://doi.org/10.1016/j.ygeno.2014.12.002">https://doi.org/10.1016/j.ygeno.2014.12.002</a></p>
+<ul>
+<li>Gene Expression Omnibus id: <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=GSE57345">GSE57345</a></li>
+<li>Samples of <em>Homo sapiens</em> heart left ventricles : 3 with heart failure, 3 without</li>
+<li>paired-end, 100bp reads</li>
+</ul>
+</li>
+<li>
+<p>Ruhland et al. (2016) “Stromal senescence establishes an immunosuppressive microenvironment that drives tumorigenesis” Nature Communications 7:11762 <a href="https://dx.doi.org/10.1038/ncomms11762">https://dx.doi.org/10.1038/ncomms11762</a></p>
+<ul>
+<li>Gene Expression Omnibus id: <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE78128">GSE78128</a></li>
+<li>Samples of <em>Mus musculus</em> skin fibroblasts : 3 non-senescent (EtOH), 3 senescent (TAM)</li>
+<li>single-end, 50bp reads</li>
+</ul>
+</li>
+</ul>
+<h2 id="fastqc-a-report-for-a-single-fastq-file">FastQC : a report for a single fastq file</h2>
+<p><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is a nice tool to get a variety of QC measures from files such as <code>.fastq</code>, <code>.bam</code> or <code>.sam</code> files. </p>
+<p>Although it has many options, the default parameters are often enough for our purpose :</p>
+<div class="highlight"><pre><span></span><code>fastqc<span class="w"> </span>-o<span class="w"> </span>&lt;output_directory&gt;<span class="w"> </span>file1.fastq<span class="w"> </span>file2.fastq<span class="w"> </span>...<span class="w"> </span>fileN.fastq
+</code></pre></div>
+<p>FastQC is reasonably intelligent, and will try to recognise the file format and uncompress it if necessary (so no need to decompress manually).</p>
+<p>So, let&rsquo;s apply fastQC to the toy dataset. </p>
+<p><strong>Task:</strong> </p>
+<p>On the cluster, ensure you are in your personal mouseMT folder.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/data/gpfs/assoc/biomarker_hunt/users/<span class="nv">$USER</span>/mouseMT
+</code></pre></div>
+<p>Then, create here a new text file name <code>010_s_fastqc.sh</code> (with <code>nano</code>, or on your local computer ), and paste the following content in it:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A note on our choice of naming conventions. Each step is numbered: 010 for fastqc, 020 for multiqc, 030 for trimming,&hellip;</p>
+<p>Sub-steps are then denoted for example 040 is mapping, and so 041 for indexing, 042 for mapping, 043 for QC of the mapping,&hellip;</p>
+<p>The number is followed by a character which depends on the type of file/folder:</p>
+<ul>
+<li><code>s</code> : script containing the bash commands</li>
+<li><code>l</code> : logs of the scripts, documenting the software messages</li>
+<li><code>d</code> : directory containing the results</li>
+<li><code>r</code> : result file (when they are note in a specific directory)</li>
+</ul>
+</div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=fastqc_mouseMT</span>
+<span class="c1">#SBATCH --time=01:00:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 010_l_fastqc_mouseMT.o</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+<span class="c1"># creating the output folder</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>010_d_fastqc/
+
+fastqc<span class="w"> </span>-o<span class="w"> </span>010_d_fastqc<span class="w"> </span>/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/*.fastq
+</code></pre></div>
+<p>Save it, and then submit it to the cluster:</p>
+<div class="highlight"><pre><span></span><code>sbatch<span class="w"> </span>010_s_fastqc.sh
+</code></pre></div>
+<p>Monitor it with <code>squeue</code>. It should take around 15 to 30 seconds in total.</p>
+<p>Once it has run, look at the content of the job output file, <code>fastqc_mouseMT.o</code>.</p>
+<p>Check that all analysis were complete and that there were no error.</p>
+<p>You can also check that the <code>010_fastqc/</code> folder contains several html files:</p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>010_d_fastqc/
+</code></pre></div>
+<p><strong>output:</strong></p>
+<div class="highlight"><pre><span></span><code>sample_a1_fastqc.html<span class="w">  </span>sample_a2_fastqc.html<span class="w">  </span>sample_a3_fastqc.html<span class="w">  </span>sample_a4_fastqc.html<span class="w">  </span>sample_b1_fastqc.html<span class="w">  </span>sample_b2_fastqc.html<span class="w">  </span>sample_b3_fastqc.html<span class="w">  </span>sample_b4_fastqc.html
+sample_a1_fastqc.zip<span class="w">   </span>sample_a2_fastqc.zip<span class="w">   </span>sample_a3_fastqc.zip<span class="w">   </span>sample_a4_fastqc.zip<span class="w">   </span>sample_b1_fastqc.zip<span class="w">   </span>sample_b2_fastqc.zip<span class="w">   </span>sample_b3_fastqc.zip<span class="w">   </span>sample_b4_fastqc.zip
+</code></pre></div>
+<p>Unfortunately, we cannot consult the html files content directly on the cluster. </p>
+<p>We will look at one of these html report on the toy dataset, and one of the pre-computed report from one of our other datasets.</p>
+<ul>
+<li>
+<p>download one of the html report of the mouseMT dataset to your local computer, as well as the one you can find in:
+<code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Liu2015/010_d_fastqc/SRR3180538_TAM1_1_fastqc.html</code>
+    <strong>OR</strong>
+    Download them:</p>
+<ul>
+<li><a class="md-button" href="../assets/html/SRR3180535_EtOH1_1_fastqc.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zm112-34 48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg></span> a fastQC report from the Ruhland 2016 data</a></li>
+<li><a class="md-button" href="../assets/html/SRR1272187_1_fastqc.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zm112-34 48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg></span> a fastQC report from the Liu 2015 data</a></li>
+<li><a class="md-button" href="../assets/html/sample_a1_fastqc.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zm112-34 48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg></span> a fastQC report from the mouseMT data</a></li>
+</ul>
+</li>
+<li>
+<p>Look at these QC reports in a web browser. What are your conclusions ? Would you want to perform some operations on the reads, such as low-quality bases trimming, removal of adapters ?</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Reminder</p>
+<p>to get the data from the remote server to your machine, you may use an SFTP client (Cyberduck), or the command line tool from your machine :   <code>scp login@xx.xx.xx:path/to/file.txt .</code></p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Important points</p>
+<ul>
+<li>FastQC RAM requirements : 1Gb is more than enough.</li>
+<li>FastQC time requirements : ~ 5min / read file.</li>
+<li>try to make sure FastQC outputs all reports in the same directory, this will save time for the next step ;-).</li>
+<li>there is no need to copy the read files to your home directory (in fact, it is good practice not to: it would create data redundancy, and we won&rsquo;t have enough space left on the disk anyway&hellip;).</li>
+</ul>
+</div>
+<details class="success">
+<summary>Alternative sbatch script using array job</summary>
+<p>Here is a solution where all files from a same dataset can be processed in parallel (recommended) by using slurm array jobs.</p>
+<p>First, have a file named <code>fastqFiles.txt</code> containing the sample fastq file names :</p>
+<div class="highlight"><pre><span></span><code>/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_a1.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_a2.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_a3.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_a4.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_b1.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_b2.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_b3.fastq
+/data/gpfs/assoc/biomarker_hunt/data/DATA/mouseMT/sample_b4.fastq
+</code></pre></div>
+<p>Then, in the same folder, you can create this sbatch script :</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=fastqc_array</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 010_l_fastqc.%a.o</span>
+<span class="c1">#SBATCH -e 010_l_fastqc.%a.e</span>
+<span class="c1">#SBATCH --array 1-8%4</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+<span class="w">    </span>conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+<span class="nv">sourceFILE</span><span class="o">=</span>fastqFiles.txt
+
+<span class="nv">fastqFILE</span><span class="o">=</span><span class="sb">`</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="sb">`</span>
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>010_d_fastqc_array/
+fastqc<span class="w"> </span>-o<span class="w"> </span>010_d_fastqc_array/<span class="w"> </span><span class="nv">$fastqFILE</span>
+</code></pre></div>
+<p>When submitted with <code>sbatch</code>, this script will spawn 6 tasks in parallel, each with a different value of <code>${SLURM_ARRAY_TASK_ID}</code>.</p>
+<p>This is the recommended option : this allows you to launch all your job in parallel with a single script.</p>
+</details>
+<details class="success">
+<summary>Interpretation of a report</summary>
+<p><a class="md-button" href="../../assets/pdf/SRR3180535_EtOH1_1_fastqc.pdf"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v144H176c-35.3 0-64 28.7-64 64v144H64c-35.3 0-64-28.7-64-64zm384 64H256V0zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56h-16v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-16v48zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-32c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 128c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-16v96zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V368"/></svg></span> Download an annotated report</a></p>
+<p>We also refer you to this <a href="https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/qc_fastqc_assessment.html">nice interpertation guide</a></p>
+</details>
+<h2 id="multiqc-grouping-multiple-reports">MultiQC : grouping multiple reports</h2>
+<p>In practice, you likely will have more than a couple of samples (maybe even more than 30 or 50&hellip;) to handle: individually consulting and comparing the QC reports of each would be tedious.</p>
+<p><a href="https://multiqc.info/">MultiQC</a> is a tool that lets you combine multiple reports in a single, interactive document that let you explore your data easily.</p>
+<p>Here, we will be focusing on grouping FastQC reports, but MultiQC can also be applied to the output or logs of other bioinformatics tools, such as mappers, as we will see later.</p>
+<p>In its default usage, <code>multiqc</code> only needs to be provided a path where it will find all the individual reports, and it will scan them and write a report named <code>multiqc_report.html</code>.</p>
+<p>Although the default behaviour is quite appropriate, with a couple of options we get a slightly better control over the output:</p>
+<ul>
+<li><code>--interactive</code> : forces the plot to be interactive even when there is a lot of samples (this option can lead to larger html files).</li>
+<li><code>-n &lt;filename&gt;</code> : specify the name of the output file name.</li>
+</ul>
+<p>For instance, a possible command line could be :
+<div class="highlight"><pre><span></span><code>multiqc<span class="w"> </span>-n<span class="w"> </span>&lt;output_file.html&gt;<span class="w"> </span>--interactive<span class="w"> </span>&lt;fastqc<span class="w"> </span>reports<span class="w"> </span>folder&gt;/
+</code></pre></div></p>
+<p>There are many additional parameters which let you customize your report. Use <code>multiqc --help</code> or visit their <a href="https://multiqc.info/docs/#running-multiqc">documentation webpage</a> to learn more.</p>
+<p><strong>Task:</strong> </p>
+<ul>
+<li>
+<p>Write an sbatch script to run MultiQC for the toy dataset.</p>
+<p>To follow the naming convention we started with, you can use the following names:</p>
+<ul>
+<li>sbatch script: <code>020_s_multiqc.sh</code> </li>
+<li>output report: <code>020_r_multiqc_mouseMT.html</code></li>
+</ul>
+</li>
+<li>
+<p>Look at the generated html report. What are your conclusions ?</p>
+</li>
+<li>
+<p>Compare the report of the toy dataset with the following report for the Ruhland2016 and Liu2015 data:</p>
+<ul>
+<li><a class="md-button" href="../assets/html/020_multiqc_Liu2015.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zm112-34 48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg></span> Download the report</a></li>
+<li><a class="md-button" href="../assets/html/020_multiqc_Ruhland2016.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0zm192 0v128h128zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zm112-34 48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg></span> Download the report</a></li>
+</ul>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>MultiQC RAM requirements : 1Gb should be more than enough.</li>
+<li>MultiQC time requirements : ~ 1min / read file.</li>
+<li>Use <code>multiqc --help</code> to check the different options</li>
+</ul>
+</div>
+<details class="success">
+<summary>mouseMT MultiQC sbatch script</summary>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=multiqc_mouseMT</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=1G</span>
+<span class="c1">#SBATCH -o 020_l_multiqc_mouseMT.%j.o</span>
+<span class="c1">#SBATCH -e 020_l_multiqc_mouseMT.%j.e</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+multiqc<span class="w"> </span>-n<span class="w"> </span>020_r_multiqc_mouseMT.html<span class="w"> </span>-f<span class="w"> </span>--title<span class="w"> </span>raw_fastq<span class="w"> </span>010_d_fastqc/
+</code></pre></div>
+On the cluster, this script is also in <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/mouseMT/020_s_multiqc.sh</code></p>
+<p><a class="md-button" href="../assets/html/020_multiqc_mouseMT.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v144H176c-35.3 0-64 28.7-64 64v144H64c-35.3 0-64-28.7-64-64zm384 64H256V0zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56h-16v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-16v48zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-32c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16m32 128c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-16v96zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V368"/></svg></span> Download the results of this script</a></p>
+</details>
+<details class="success">
+<summary>Interpretation of the report for the mouseMT data.</summary>
+<p><img alt="per base sequence quality" src="../../assets/images/multiqc_mouseMT/fastqc_per_base_sequence_quality_plot.png" /></p>
+<p>The PHRED quality of reads drop below 30 around base 75. All samples seem affected. One sample seems to stand out a bit</p>
+<p><img alt="fastqc per sequence quality scores plot" src="../../assets/images/multiqc_mouseMT/fastqc_per_sequence_quality_scores_plot.png" /></p>
+<p>Mean quality scores are on average fairly high.</p>
+<p><img alt="fastqc per sequence gc content plot" src="../../assets/images/multiqc_mouseMT/fastqc_per_sequence_gc_content_plot.png" /></p>
+<p>Most samples do not deviate too much, Except for two samples which clearly contains more GC% rich content compared to the other samples.
+This may be indicative of contamination or just a difference in composition.</p>
+<p><img alt="fastqc sequence duplication levels plot" src="../../assets/images/multiqc_mouseMT/fastqc_sequence_duplication_levels_plot.png" /></p>
+<p>Here we see that some sequences are duplicated, but not many.
+Normally in the context of RNA-seq, some transcripts are present in a large number of copies in the samples, so we would expect to see more over-represented sequences. 
+This is not the case here because this is a toy dataset with a very small number of reads.</p>
+<p><img alt="fastqc adapter content plot" src="../../assets/images/multiqc_mouseMT/fastqc_adapter_content_plot.png" /></p>
+<p>We see a clear trend of adapter contamination for one sample as we get closer to the reads&rsquo; end. Note the y-scale though : we never go above a 6% content per sample.</p>
+<p>Overall, we can conclude that one sample in particular stands out. </p>
+<p>We should note its name and monitor it closely as we go through the rest of our analysis pipeline.</p>
+<p>At the moment, the analysis steps are independent from sample to sample, so keeping that potential outlier is not a problem. However, when we come to differential analysis we will have to decide if we keep this sample or exclude it.</p>
+</details>
+<details class="success">
+<summary>Ruhland 2016 sbatch scripts</summary>
+<div class="codehilite"><pre><span></span><code>First create a file named `sampleNames.txt`, containing the sample names:
+
+```
+EtOH_1
+EtOH_2
+EtOH_3
+TAM_1
+TAM_2
+TAM_3
+```
+</code></pre></div>
+
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=fastqc_array</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=4G</span>
+<span class="c1">#SBATCH -o 010_l_fastqc.%a.o</span>
+<span class="c1">#SBATCH -e 010_l_fastqc.%a.e</span>
+<span class="c1">#SBATCH --array 1-6%6</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+<span class="w">    </span>conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+<span class="nv">sourceFILE</span><span class="o">=</span>sampleNames.txt
+
+<span class="nv">SAMPLE</span><span class="o">=</span><span class="sb">`</span>sed<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">SLURM_ARRAY_TASK_ID</span><span class="si">}</span>p<span class="w"> </span><span class="nv">$sourceFILE</span><span class="sb">`</span>
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>010_d_fastqc/
+fastqc<span class="w"> </span>-o<span class="w"> </span>010_d_fastqc/<span class="w"> </span>/data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016/<span class="si">${</span><span class="nv">SAMPLE</span><span class="si">}</span>.fastq.gz
+</code></pre></div>
+    On the cluster, this script is also in  <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_fastqc.sh</code></p>
+<p><div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<span class="c1">#SBATCH --job-name=multiqc_ruhland2016</span>
+<span class="c1">#SBATCH --time=00:30:00</span>
+<span class="c1">#SBATCH --cpus-per-task=1</span>
+<span class="c1">#SBATCH --mem=4G</span>
+<span class="c1">#SBATCH -o 020_l_multiqc_ruhland.%j.o</span>
+<span class="c1">#SBATCH -e 020_l_multiqc_ruhland.%j.e</span>
+<span class="c1">#SBATCH --account=cpu-s5-biomarker_hunt-0</span>
+<span class="c1">#SBATCH --partition=cpu-core-0</span>
+
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+conda<span class="w"> </span>activate<span class="w"> </span>rnaseq_env<span class="w">  </span><span class="c1"># load the conda environment</span>
+
+multiqc<span class="w"> </span>-n<span class="w"> </span>020_r_multiqc_ruhland.html<span class="w"> </span>-f<span class="w"> </span>--title<span class="w"> </span>raw_fastq<span class="w"> </span>010_d_fastqc/
+</code></pre></div>
+On the cluster, this script is also in <code>/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/021_s_multiqc.sh</code></p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../server_login/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Server login + unix fresh up">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Server login + unix fresh up
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../trimming/" class="md-footer__link md-footer__link--next" aria-label="Next: Sequence trimming">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sequence trimming
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 University of Nevada, Reno
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
