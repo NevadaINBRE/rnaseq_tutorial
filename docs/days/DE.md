@@ -152,9 +152,6 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 	  design = ~ treatment)
 	dim(dds)
 	```
-	<!-- ```
-	[1] 37  8
-	``` -->
 
 
 	We perform the estimation of dispersions 
@@ -392,7 +389,7 @@ ENSMUSG00000064341	4046	4098	4031	1	449	515	13	456
 
 ## Differential Expression - Task
 
-Use either DESeq2 to conduct a differential expression analysis on the Ruhland dataset.
+Use DESeq2 to conduct a differential expression analysis on the Ruhland dataset.
 
 
 
