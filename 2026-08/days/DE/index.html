@@ -857,16 +857,6 @@
 <span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="nf">names</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
-<!-- ```
-                    V2      V3      V4
-ENSMUSG00000064336  0       0       0   
-ENSMUSG00000064337  0       0       0   
-ENSMUSG00000064338  0       0       0   
-ENSMUSG00000064339  0       0       0   
-ENSMUSG00000064340  0       0       0   
-ENSMUSG00000064341  4046    1991    2055    
-``` -->
-
 <p>We have gene information and count information. We need to be able to easily access our counts and rename our sample columns for easier use. </p>
 <div class="highlight"><pre><span></span><code><span class="n">idx.num</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">14</span><span class="o">:</span><span class="m">21</span>
 <span class="n">sample_names</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;a1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b4&quot;</span><span class="p">)</span>
@@ -874,16 +864,6 @@ ENSMUSG00000064341  4046    1991    2055
 <span class="nf">colnames</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">idx.num</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sample_names</span>
 <span class="nf">names</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
-<!-- ```
-                    a1      a2      a3      a4  b1  b2  b3  b4
-ENSMUSG00000064336  0       0       0       0   0   0   0   0
-ENSMUSG00000064337  0       0       0       0   0   0   0   0
-ENSMUSG00000064338  0       0       0       0   0   0   0   0
-ENSMUSG00000064339  0       0       0       2   0   0   0   0
-ENSMUSG00000064340  0       0       0       0   0   0   0   0
-ENSMUSG00000064341  4046    4098    4031    1   449 515 13  456
-``` -->
-
 <details class="success">
 <summary>DESeq2 analysis</summary>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">DESeq2</span><span class="p">)</span>
@@ -929,16 +909,6 @@ b4  b
 </code></pre></div>
 <p>We perform the estimation of dispersions 
 <div class="highlight"><pre><span></span><code><span class="n">dds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>estimating size factors
-estimating dispersions
-gene-wise dispersion estimates
-mean-dispersion relationship
--- note: fitType=&#39;parametric&#39;, but the dispersion trend was not well captured by the
-   function: y = a/x + b, and a local regression fit was automatically substituted.
-   specify fitType=&#39;local&#39; or &#39;mean&#39; to avoid this message next time.
-final dispersion estimates
-fitting model and testing
 </code></pre></div></p>
 <p>PCA plot of the samples:
 <div class="highlight"><pre><span></span><code><span class="n">vsd</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">varianceStabilizingTransformation</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
@@ -1002,18 +972,6 @@ low counts [2]     : 0, 0%
 </code></pre></div>
 <p><img alt="pca no outliers" src="../../assets/images/DESeq2_mouseMT/mouseMT_pca2.png" /></p>
 <p>It looks much better. Seems like PC1 captures the group effect</p>
-<p>&lt;!&ndash; We plot the estimate of the dispersions
-<div class="highlight"><pre><span></span><code><span class="c1"># * black dot : raw</span>
-<span class="c1"># * red dot : local trend</span>
-<span class="c1"># * blue : corrected</span>
-<span class="nf">plotDispEsts</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-</code></pre></div></p>
-<p><img alt="dispersion estimate mouseMT" src="../../assets/images/DESeq2_mouseMT/mouseMT_dispEst.png" /></p>
-<p>There is so few genes that this does not look super nice here</p>
-<p>For the Ruhland2016 dataset it looks like:</p>
-<p><img alt="dispersion estimate Ruhland2016" src="../../assets/images/DESeq2/ruhland2016_dispEst.png" /></p>
-<p>This plot is not easy to interpret. It represents the amount of dispersion at different levels of expression. It is directly linked to our ability to detect differential expression.</p>
-<p>Here it looks about normal compared to typical bulk RNA-seq experiments : the dispersion is comparatively larger for lowly-expressed genes. &ndash;&gt;</p>
 <p><div class="highlight"><pre><span></span><code><span class="c1"># extracting results for the treatment versus control contrast</span>
 <span class="n">res</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 <span class="nf">summary</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
