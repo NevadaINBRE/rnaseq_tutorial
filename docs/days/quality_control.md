@@ -322,16 +322,16 @@ There are many additional parameters which let you customize your report. Use `m
 
 ??? success "Ruhland 2016 sbatch scripts"
 
-        First create a file named `sampleNames.txt`, containing the sample names:
+	First create a file named `sampleNames.txt`, containing the sample names:
 
-        ```
-        EtOH_1
-        EtOH_2
-        EtOH_3
-        TAM_1
-        TAM_2
-        TAM_3
-        ```
+	```sh
+	EtOH_1
+	EtOH_2
+	EtOH_3
+	TAM_1
+	TAM_2
+	TAM_3
+	```
 
 
 	```sh
@@ -356,7 +356,7 @@ There are many additional parameters which let you customize your report. Use `m
 	mkdir -p 010_d_fastqc/
 	fastqc -o 010_d_fastqc/ /data/gpfs/assoc/biomarker_hunt/data/DATA/Ruhland2016/${SAMPLE}.fastq.gz
 	```
-        On the cluster, this script is also in  `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_fastqc.sh`
+        On the cluster, this script is also in  `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/010_s_fastqc.sh`
 
 	```sh
 	#!/usr/bin/bash
@@ -374,4 +374,4 @@ There are many additional parameters which let you customize your report. Use `m
 
 	multiqc -n 020_r_multiqc_ruhland.html -f --title raw_fastq 010_d_fastqc/
 	```
-	On the cluster, this script is also in `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/021_s_multiqc.sh`
+	On the cluster, this script is also in `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/020_s_multiqc.sh`

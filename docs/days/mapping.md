@@ -338,7 +338,7 @@ Which one would you choose?
 	```sh
 	#!/usr/bin/bash
 	#SBATCH --job-name=star-build
-	#SBATCH --time=00:30:00
+	#SBATCH --time=02:30:00
 	#SBATCH --cpus-per-task=4
 	#SBATCH --mem=48G
 	#SBATCH -o 041_l_star_index.o
@@ -360,11 +360,13 @@ Which one would you choose?
 	     --runThreadN 4 \
 
 	```
+	it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/041_s_index.sh`
+
 	
 	```sh
 	#!/usr/bin/bash
 	#SBATCH --job-name=star-aln
-	#SBATCH --time=00:10:00
+	#SBATCH --time=02:10:00
 	#SBATCH --cpus-per-task=4
 	#SBATCH --mem=32G
 	#SBATCH -o 044_l_STAR_map_trimmed.%a.o
@@ -385,6 +387,7 @@ Which one would you choose?
 	     --outSAMtype BAM SortedByCoordinate \
 	     --outFileNamePrefix 044_d_STAR_map_trimmed/${SAMPLE}_trimmed. \
 	     --quantMode GeneCounts \
+	     --readFilesCommand zcat \
 	     --readFilesIn $FASTQ_NAME
 	```
 	it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/044_s_STAR_map_trimmed.sh`
@@ -405,4 +408,4 @@ Which one would you choose?
 
 	multiqc -n 045_r_multiqc_ruhland_mapped_trimmed.html -f --title mapped_trimmed 044_d_STAR_map_trimmed/
 	```
-	it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/045_s_multiqc_mouseMT_mapped_trimmed.sh`
+	it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/045_s_multiqc_mapped_trimmed.sh`

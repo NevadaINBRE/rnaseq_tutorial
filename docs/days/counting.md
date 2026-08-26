@@ -154,3 +154,5 @@ Now rerun featureCounts with the `--extraAttributes` option configured with the 
 		$inFOLDER/*.bam
 
 	```
+
+	it can also be found in the cluster at `/data/gpfs/assoc/biomarker_hunt/data/Solutions/Ruhland2016/052_s_featurecounts.sh`
